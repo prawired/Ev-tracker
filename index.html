@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="EV Tracker">
+<meta name="theme-color" content="#0f3460">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%230f3460'/%3E%3Ctext x='50%25' y='55%25' font-size='110' text-anchor='middle' fill='%23fbbf24' font-weight='900' font-family='Arial Black'%3EEV%3C/text%3E%3C/svg%3E">
+<title>EV Tracker · FireRed</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --dark-bg: #0a0e27;
+  --dark-panel: #16213e;
+  --dark-panel-2: #0f3460;
+  --accent: #fbbf24;
+  --accent-dim: #d97706;
+  --text: #fde68a;
+  --text-muted: rgba(253, 230, 138, 0.6);
+  --text-dim: rgba(253, 230, 138, 0.4);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(251, 191, 36, 0.3);
+  --success: #10b981;
+  --danger: #ef4444;
+  --purple: #a855f7;
+  --indigo: #6366f1;
+  --cream: #fff4cc;
+}
+
+body {
+  font-family: 'Courier New', 'Menlo', monospace;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: var(--text);
+  min-height: 100vh;
+  padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* HEADER */
+.header {
+  padding: 16px 0 16px;
+  border-bottom: 2px solid var(--border-strong);
+  margin-bottom: 16px;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-family: Arial Black, Impact, sans-serif;
+  font-size: clamp(28px, 8vw, 48px);
+  font-weight: 900;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+  line-height: 1;
+}
+
+.subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top: 6px;
+  font-weight: bold;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+  min-height: 36px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.btn:active { transform: scale(0.96); }
+.btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.btn-amber { border-color: rgba(251, 191, 36, 0.4); color: #fcd34d; background: rgba(251, 191, 36, 0.08); }
+.btn-amber:not(:disabled):hover { background: rgba(251, 191, 36, 0.18); }
+
+.btn-indigo { border-color: rgba(99, 102, 241, 0.4); color: #a5b4fc; background: rgba(99, 102, 241, 0.08); }
+.btn-indigo:not(:disabled):hover { background: rgba(99, 102, 241, 0.18); }
+
+.btn-emerald { border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7; background: rgba(16, 185, 129, 0.08); }
+.btn-emerald:not(:disabled):hover { background: rgba(16, 185, 129, 0.18); }
+
+.btn-purple { border-color: rgba(168, 85, 247, 0.4); color: #d8b4fe; background: rgba(168, 85, 247, 0.08); }
+.btn-purple:not(:disabled):hover { background: rgba(168, 85, 247, 0.18); }
+
+.btn-red { border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; background: rgba(239, 68, 68, 0.08); }
+
+.btn-primary {
+  background: var(--accent);
+  color: #1a1a2e;
+  border-color: var(--accent);
+}
+.btn-primary:not(:disabled):hover { background: #fcd34d; }
+
+.status {
+  font-size: 11px;
+  color: var(--accent);
+  min-height: 18px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+}
+
+/* SECTIONS */
+.section-label {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.grid {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.grid-pokemon {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (min-width: 640px) {
+  .grid-pokemon { grid-template-columns: repeat(6, 1fr); }
+}
+
+/* POKEMON CARD */
+.p-card {
+  position: relative;
+  padding: 12px 10px;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  background: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+  min-height: 92px;
+}
+
+.p-card.selected {
+  transform: scale(1.04);
+  box-shadow: 0 0 20px var(--card-shadow, rgba(251, 191, 36, 0.3));
+}
+
+.p-card:active { transform: scale(0.98); }
+
+.p-card-sprite {
+  font-size: 28px;
+  line-height: 1;
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.p-card-variant-badge {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  font-size: 9px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(99, 102, 241, 0.3);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.5);
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.p-card-name {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.p-card-bar {
+  height: 3px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.p-card-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.p-card-total {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-family: ui-monospace, monospace;
+}
+
+/* DETAIL CARD */
+.detail {
+  border-radius: 14px;
+  border: 2px solid var(--selected-color, var(--accent));
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.3), inset 0 0 60px rgba(0, 0, 0, 0.4);
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.detail-identity {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.detail-sprite {
+  font-size: 48px;
+  padding: 10px;
+  border-radius: 10px;
+  line-height: 1;
+  background: var(--sprite-bg, rgba(251, 191, 36, 0.15));
+}
+
+.detail-name {
+  font-family: Arial Black, Impact, sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.detail-nature {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-top: 2px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.custom-badge {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(168, 85, 247, 0.2);
+  color: #d8b4fe;
+  letter-spacing: 0.15em;
+}
+
+.detail-total {
+  text-align: right;
+}
+
+.detail-total-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.detail-total-value {
+  font-family: Arial Black, sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.detail-total-value.complete { color: var(--success); }
+
+.detail-total-slash {
+  font-size: 18px;
+  color: var(--text-dim);
+}
+
+.detail-total-remaining {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* VARIANT SELECTOR */
+.variant-selector {
+  margin-bottom: 18px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.variant-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.variant-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.variant-btn {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all 0.15s;
+}
+
+.variant-btn.active {
+  transform: scale(1.04);
+}
+
+.variant-btn:active { transform: scale(0.96); }
+
+.variant-note {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* STATS */
+.stats {
+  margin-bottom: 18px;
+}
+
+.stat-row {
+  margin-bottom: 12px;
+}
+
+.stat-row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stat-label {
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.stat-target {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(251, 191, 36, 0.15);
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  font-weight: bold;
+}
+
+.stat-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.stat-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid;
+  background: rgba(0, 0, 0, 0.3);
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  touch-action: manipulation;
+}
+
+.stat-btn:active:not(:disabled) { transform: scale(0.9); }
+.stat-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.stat-btn.minus { border-color: rgba(239, 68, 68, 0.3); color: #fca5a5; background: rgba(239, 68, 68, 0.15); }
+.stat-btn.plus { border-color: rgba(16, 185, 129, 0.3); color: #6ee7b7; background: rgba(16, 185, 129, 0.15); }
+
+.stat-input {
+  width: 58px;
+  height: 32px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 4px;
+  -moz-appearance: textfield;
+}
+
+.stat-input::-webkit-outer-spin-button,
+.stat-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.stat-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.stat-bar-wrapper {
+  position: relative;
+  height: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.stat-bar-fill.max {
+  background: linear-gradient(90deg, #10b981, #34d399) !important;
+}
+
+.stat-bar-target-marker {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--accent);
+  box-shadow: 0 0 4px rgba(251, 191, 36, 0.5);
+}
+
+.stat-train-spot {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 3px;
+  padding-left: 2px;
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+/* MOVESET */
+.moveset {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.moveset-label {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: var(--selected-color, var(--accent));
+  margin-bottom: 12px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.moveset-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .moveset-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.move-item {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+}
+
+.move-name {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.move-source {
+  font-size: 10px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* EXTRAS SECTION */
+.extras-empty {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-style: italic;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  border: 1px dashed var(--border);
+}
+
+/* TIPS */
+.tips {
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  padding: 14px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.tips-header {
+  font-weight: bold;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+
+.tips strong { color: var(--text); }
+
+/* MODAL */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.modal {
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 14px;
+  border: 2px solid var(--modal-border, rgba(168, 85, 247, 0.4));
+  padding: 20px;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-title {
+  font-family: Arial Black, sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--modal-title-color, #d8b4fe);
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 8px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.form-input, .form-select {
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.form-input:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--purple);
+}
+
+.form-grid-icons {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.icon-btn {
+  padding: 6px;
+  font-size: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.1s;
+  line-height: 1;
+}
+
+.icon-btn.selected {
+  background: rgba(168, 85, 247, 0.3);
+  box-shadow: 0 0 0 2px var(--purple);
+}
+
+.form-grid-colors {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+}
+
+.color-btn {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.color-btn.selected {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 2px white;
+}
+
+.preview {
+  margin-bottom: 18px;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.preview-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.preview-sprite {
+  font-size: 24px;
+  padding: 8px;
+  border-radius: 6px;
+  background: var(--preview-bg);
+  border: 2px solid var(--preview-color);
+  line-height: 1;
+}
+
+.preview-info-name {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--text);
+}
+
+.preview-info-nature {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* HISTORY */
+.history-empty {
+  padding: 60px 0;
+  text-align: center;
+  color: var(--text-dim);
+}
+
+.history-empty-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.history-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.history-item {
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.history-item.latest { border-color: rgba(99, 102, 241, 0.4); }
+
+.history-sprite { font-size: 22px; line-height: 1; }
+
+.history-body { flex: 1; min-width: 0; }
+
+.history-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.history-pokemon-name {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text);
+}
+
+.history-tag {
+  font-size: 9px;
+  padding: 2px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.15em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.history-tag.adjust { background: rgba(96, 165, 250, 0.15); color: #93c5fd; border: 1px solid rgba(96, 165, 250, 0.3); }
+.history-tag.set { background: rgba(167, 139, 250, 0.15); color: #c4b5fd; border: 1px solid rgba(167, 139, 250, 0.3); }
+.history-tag.reset { background: rgba(248, 113, 113, 0.15); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.3); }
+.history-tag.applyRecommended { background: rgba(251, 191, 36, 0.15); color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.3); }
+
+.history-next-undo {
+  font-size: 9px;
+  color: #a5b4fc;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.history-details {
+  font-size: 11px;
+  color: var(--text-muted);
+  word-wrap: break-word;
+}
+
+.history-time {
+  text-align: right;
+  flex-shrink: 0;
+  font-family: ui-monospace, monospace;
+}
+
+.history-time-hour { font-size: 11px; color: var(--text-muted); }
+.history-time-date { font-size: 9px; color: var(--text-dim); }
+
+/* SYNC PANEL */
+.sync-section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.sync-section-title {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.sync-help {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.sync-help code {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: var(--accent);
+  font-size: 10px;
+}
+
+.sync-status {
+  font-size: 11px;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.sync-status.ok { color: #6ee7b7; }
+.sync-status.err { color: #fca5a5; }
+
+/* Hide number spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Safe area for iOS notch */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .container {
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const ELITE_TEAM = [
+  {
+    id: 'jynx',
+    name: 'Jynx',
+    nature: 'Modest',
+    sprite: '❄️',
+    color: '#E879C9',
+    recommended: { spAtk: 252, speed: 252, hp: 4 },
+    moves: [
+      { name: 'Psychic', source: 'TM29 — Saffron Dojo' },
+      { name: 'Ice Beam', source: 'TM13 — Game Corner Celadon' },
+      { name: 'Calm Mind', source: 'TM04 — Game Corner Celadon' },
+      { name: 'Body Slam', source: 'TM08 — Game Corner Celadon' },
+    ],
+    trainSpots: {
+      hp: 'Chansey (Safari Zone) — 2 EVs/KO',
+      atk: 'Mankey/Primeape (Route 22) — 1 EV/KO',
+      def: 'Geodude (Rock Tunnel) — 1 EV/KO',
+      spAtk: 'Gastly (Pokémon Tower) — 1 EV/KO',
+      spDef: 'Tentacool (qualquer água) — 1 EV/KO',
+      speed: 'Zubat/Diglett (Diglett Cave) — 1 EV/KO',
+    },
+  },
+  {
+    id: 'lapras',
+    name: 'Lapras',
+    nature: 'Modest',
+    sprite: '🌊',
+    color: '#4A90E2',
+    recommended: { hp: 252, spAtk: 252, def: 4 },
+    moves: [
+      { name: 'Surf', source: 'HM03 — Safari Zone Warden' },
+      { name: 'Ice Beam', source: 'TM13 — Icefall Cave / Game Corner' },
+      { name: 'Thunderbolt', source: 'TM24 — Rocket Hideout Celadon' },
+      { name: 'Body Slam', source: 'TM08 — Game Corner prize' },
+    ],
+    trainSpots: {
+      hp: 'Chansey (Safari Zone) — 2 EVs/KO',
+      atk: 'Mankey (Route 22) — 1 EV/KO',
+      def: 'Geodude (Rock Tunnel) — 1 EV/KO',
+      spAtk: 'Gastly (Pokémon Tower) — 1 EV/KO',
+      spDef: 'Tentacool — 1 EV/KO',
+      speed: 'Zubat — 1 EV/KO',
+    },
+  },
+  {
+    id: 'snorlax',
+    name: 'Snorlax',
+    nature: 'Adamant',
+    sprite: '🗿',
+    color: '#4A5568',
+    recommended: { hp: 252, atk: 252, spDef: 4 },
+    moves: [
+      { name: 'Body Slam', source: 'TM08 — Game Corner Celadon' },
+      { name: 'Return', source: 'TM27 — Route 12 (amizade alta)' },
+      { name: 'Rest', source: 'TM44 — Safari Zone (+ Chesto Berry)' },
+      { name: 'Shadow Ball', source: 'TM30 — Game Corner Celadon' },
+    ],
+    trainSpots: {
+      hp: 'Chansey (Safari Zone) — 2 EVs/KO',
+      atk: 'Mankey/Primeape (Route 22) — 1 EV/KO',
+      def: 'Geodude — 1 EV/KO',
+      spAtk: 'Gastly — 1 EV/KO',
+      spDef: 'Tentacool — 1 EV/KO',
+      speed: 'Zubat (Mt. Moon) — 1 EV/KO',
+    },
+  },
+  {
+    id: 'rhydon',
+    name: 'Rhydon',
+    nature: 'Adamant',
+    sprite: '🦏',
+    color: '#8B6F47',
+    recommended: { atk: 252, hp: 252, def: 4 },
+    moves: [
+      { name: 'Earthquake', source: 'TM26 — Giovanni Viridian Gym' },
+      { name: 'Rock Slide', source: 'TM39 — Silph Co. / Rocket Hideout' },
+      { name: 'Brick Break', source: 'TM31 — Celadon Dept. Store' },
+      { name: 'Double-Edge', source: 'Move tutor — Mt. Ember (Sevii)' },
+    ],
+    trainSpots: {
+      hp: 'Chansey (Safari Zone) — 2 EVs/KO',
+      atk: 'Mankey/Primeape — 1 EV/KO',
+      def: 'Geodude/Graveler — 1 EV/KO',
+      spAtk: 'Gastly — 1 EV/KO',
+      spDef: 'Tentacool — 1 EV/KO',
+      speed: 'Zubat — 1 EV/KO',
+    },
+  },
+  {
+    id: 'charizard',
+    name: 'Charizard',
+    nature: 'Mild',
+    sprite: '🔥',
+    color: '#D97706',
+    recommended: { spAtk: 252, atk: 128, speed: 128 },
+    moves: [
+      { name: 'Fire Blast', source: 'TM38 — Pokémon Mansion (Cinnabar)' },
+      { name: 'Brick Break', source: 'TM31 — Celadon Dept. Store' },
+      { name: 'Dragon Claw', source: 'Move tutor — Cape Brink (pós-Sevii)' },
+      { name: 'Hidden Power Grass', source: 'TM10 — Route 15 / Meowth Pickup' },
+    ],
+    trainSpots: {
+      hp: 'Chansey — 2 EVs/KO',
+      atk: 'Mankey (Route 22) — 1 EV/KO',
+      def: 'Geodude — 1 EV/KO',
+      spAtk: 'Gastly (Pokémon Tower) — 1 EV/KO',
+      spDef: 'Tentacool — 1 EV/KO',
+      speed: 'Zubat/Diglett (Diglett Cave) — 1 EV/KO',
+    },
+  },
+  {
+    id: 'electric_slot',
+    name: 'Jolteon',
+    nature: 'Timid',
+    sprite: '⚡',
+    color: '#EAB308',
+    recommended: { spAtk: 252, speed: 252, hp: 4 },
+    moves: [
+      { name: 'Thunderbolt', source: 'TM24 — Rocket Hideout Celadon' },
+      { name: 'Bite', source: 'Natural (Eevee aprende cedo)' },
+      { name: 'Thunder Wave', source: 'Natural nível 36' },
+      { name: 'Hidden Power', source: 'TM10 — Route 15 / Meowth Pickup' },
+    ],
+    trainSpots: {
+      hp: 'Chansey — 2 EVs/KO',
+      atk: 'Mankey — 1 EV/KO',
+      def: 'Geodude — 1 EV/KO',
+      spAtk: 'Gastly (Pokémon Tower) — 1 EV/KO',
+      spDef: 'Tentacool — 1 EV/KO',
+      speed: 'Zubat/Diglett — 1 EV/KO',
+    },
+    variants: [
+      {
+        name: 'Jolteon',
+        nature: 'Timid',
+        sprite: '⚡',
+        color: '#EAB308',
+        recommended: { spAtk: 252, speed: 252, hp: 4 },
+        moves: [
+          { name: 'Thunderbolt', source: 'TM24 — Rocket Hideout Celadon' },
+          { name: 'Bite', source: 'Natural (Eevee aprende cedo)' },
+          { name: 'Thunder Wave', source: 'Natural nível 36' },
+          { name: 'Hidden Power', source: 'TM10 — Route 15 / Meowth Pickup' },
+        ],
+        note: 'Special sweeper puro. Speed 130, Sp.Atk 110. Eevee em Celadon Mansion.',
+      },
+      {
+        name: 'Raichu',
+        nature: 'Naughty',
+        sprite: '🐭',
+        color: '#F59E0B',
+        recommended: { speed: 252, atk: 128, spAtk: 128, hp: 4 },
+        moves: [
+          { name: 'Thunderbolt', source: 'TM24 — Rocket Hideout Celadon' },
+          { name: 'Quick Attack', source: 'Natural nível 11 (Pikachu)' },
+          { name: 'Thunder Wave', source: 'Natural nível 8 (Pikachu)' },
+          { name: 'Brick Break', source: 'TM31 — Celadon Dept. Store' },
+        ],
+        note: 'Mixed attacker. Atk 90 + Sp.Atk 90 aproveita físico. Requer Pikachu Naughty.',
+      },
+    ],
+  },
+];
+
+const DEFAULT_SPOTS = {
+  hp: 'Chansey (Safari Zone) — 2 EVs/KO',
+  atk: 'Mankey/Primeape (Route 22) — 1 EV/KO',
+  def: 'Geodude (Rock Tunnel) — 1 EV/KO',
+  spAtk: 'Gastly (Pokémon Tower) — 1 EV/KO',
+  spDef: 'Tentacool (qualquer água) — 1 EV/KO',
+  speed: 'Zubat/Diglett — 1 EV/KO',
+};
+
+const NATURES = ['Hardy', 'Lonely', 'Brave', 'Adamant', 'Naughty', 'Bold', 'Docile', 'Relaxed', 'Impish', 'Lax', 'Timid', 'Hasty', 'Serious', 'Jolly', 'Naive', 'Modest', 'Mild', 'Quiet', 'Bashful', 'Rash', 'Calm', 'Gentle', 'Sassy', 'Careful', 'Quirky'];
+
+const SPRITE_OPTIONS = ['🔥','💧','🌿','⚡','❄️','🪨','👊','☠️','🌍','🕊️','🧠','🐛','👻','🐲','🌑','⚙️','🧚','🔮','🌊','🐉','🦏','🦴','🐍','🐦','🦇','🐴','🦎','🦋','🕷️','🦂','⭐','🌙','☀️','💀','🎭','🎯','💎','🗿','🌸','🍃'];
+
+const COLOR_OPTIONS = ['#EF4444','#F97316','#F59E0B','#EAB308','#84CC16','#22C55E','#10B981','#14B8A6','#06B6D4','#0EA5E9','#3B82F6','#6366F1','#8B5CF6','#A855F7','#D946EF','#EC4899','#F43F5E','#78716C','#8B6F47','#4A90E2'];
+
+const STAT_KEYS = [
+  { key: 'hp', label: 'HP' },
+  { key: 'atk', label: 'Attack' },
+  { key: 'def', label: 'Defense' },
+  { key: 'spAtk', label: 'Sp. Attack' },
+  { key: 'spDef', label: 'Sp. Defense' },
+  { key: 'speed', label: 'Speed' },
+];
+
+const MAX_TOTAL = 510;
+const MAX_PER_STAT = 252;
+const emptyEVs = () => ({ hp: 0, atk: 0, def: 0, spAtk: 0, spDef: 0, speed: 0 });
+
+// ============================================================
+// STATE
+// ============================================================
+const state = {
+  evs: {},
+  customPokemon: [],
+  selected: ELITE_TEAM[0].id,
+  history: [],
+  activeVariants: {},
+  syncGistId: '',
+  syncToken: '',
+  saveStatus: '',
+  showAddModal: false,
+  showHistoryModal: false,
+  showSyncModal: false,
+  editingId: null,
+  form: { name: '', nature: 'Hardy', sprite: '⭐', color: '#8B5CF6' },
+  syncStatus: '',
+};
+
+let saveStatusTimer = null;
+let syncStatusTimer = null;
+let autoSyncTimer = null;
+
+// ============================================================
+// STORAGE
+// ============================================================
+const STORAGE_KEY = 'firered_ev_tracker_v1';
+
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (data.evs) state.evs = data.evs;
+    if (data.customPokemon) state.customPokemon = data.customPokemon;
+    if (data.history) state.history = data.history;
+    if (data.activeVariants) state.activeVariants = data.activeVariants;
+    if (data.syncGistId) state.syncGistId = data.syncGistId;
+    if (data.syncToken) state.syncToken = data.syncToken;
+  } catch (e) {
+    console.warn('Failed to load:', e);
+  }
+}
+
+function saveToStorage() {
+  try {
+    const data = {
+      evs: state.evs,
+      customPokemon: state.customPokemon,
+      history: state.history,
+      activeVariants: state.activeVariants,
+      syncGistId: state.syncGistId,
+      syncToken: state.syncToken,
+      lastModified: Date.now(),
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    return true;
+  } catch (e) {
+    console.warn('Failed to save:', e);
+    return false;
+  }
+}
+
+function initEVs() {
+  const init = {};
+  [...ELITE_TEAM, ...state.customPokemon].forEach((p) => {
+    init[p.id] = state.evs[p.id] || emptyEVs();
+  });
+  state.evs = init;
+}
+
+// ============================================================
+// GIST SYNC
+// ============================================================
+async function syncToGist() {
+  if (!state.syncToken || !state.syncGistId) {
+    setSyncStatus('Falta token ou Gist ID', 'err');
+    return;
+  }
+  setSyncStatus('A sincronizar...', '');
+  try {
+    const data = {
+      evs: state.evs,
+      customPokemon: state.customPokemon,
+      history: state.history,
+      activeVariants: state.activeVariants,
+      lastModified: Date.now(),
+    };
+    const res = await fetch(`https://api.github.com/gists/${state.syncGistId}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `token ${state.syncToken}`,
+        'Accept': 'application/vnd.github+json',
+      },
+      body: JSON.stringify({
+        files: { 'ev-tracker-data.json': { content: JSON.stringify(data, null, 2) } },
+      }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    setSyncStatus('Enviado para Gist ✓', 'ok');
+  } catch (e) {
+    setSyncStatus(`Erro: ${e.message}`, 'err');
+  }
+}
+
+async function syncFromGist() {
+  if (!state.syncGistId) {
+    setSyncStatus('Falta Gist ID', 'err');
+    return;
+  }
+  setSyncStatus('A carregar...', '');
+  try {
+    const headers = { 'Accept': 'application/vnd.github+json' };
+    if (state.syncToken) headers['Authorization'] = `token ${state.syncToken}`;
+    const res = await fetch(`https://api.github.com/gists/${state.syncGistId}`, { headers });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const gist = await res.json();
+    const file = gist.files && gist.files['ev-tracker-data.json'];
+    if (!file) throw new Error('Ficheiro ev-tracker-data.json não encontrado no Gist');
+    const data = JSON.parse(file.content);
+    if (data.evs) state.evs = data.evs;
+    if (data.customPokemon) state.customPokemon = data.customPokemon;
+    if (data.history) state.history = data.history;
+    if (data.activeVariants) state.activeVariants = data.activeVariants;
+    initEVs();
+    saveToStorage();
+    render();
+    setSyncStatus('Carregado do Gist ✓', 'ok');
+  } catch (e) {
+    setSyncStatus(`Erro: ${e.message}`, 'err');
+  }
+}
+
+function setSyncStatus(msg, type) {
+  state.syncStatus = { msg, type };
+  renderSyncStatus();
+  clearTimeout(syncStatusTimer);
+  syncStatusTimer = setTimeout(() => {
+    state.syncStatus = '';
+    renderSyncStatus();
+  }, 4000);
+}
+
+function renderSyncStatus() {
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  if (state.syncStatus && state.syncStatus.msg) {
+    el.textContent = state.syncStatus.msg;
+    el.className = 'sync-status ' + (state.syncStatus.type || '');
+  } else {
+    el.textContent = '';
+    el.className = 'sync-status';
+  }
+}
+
+function scheduleAutoSync() {
+  if (!state.syncGistId || !state.syncToken) return;
+  clearTimeout(autoSyncTimer);
+  autoSyncTimer = setTimeout(syncToGist, 3000);
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function resolvePokemon(base) {
+  if (!base.variants || base.variants.length === 0) return base;
+  const activeName = state.activeVariants[base.id];
+  if (!activeName) return base;
+  const v = base.variants.find((x) => x.name === activeName);
+  if (!v) return base;
+  return { ...base, name: v.name, nature: v.nature, sprite: v.sprite, color: v.color, recommended: v.recommended, moves: v.moves };
+}
+
+function getAllPokemon() {
+  return [...ELITE_TEAM.map(resolvePokemon), ...state.customPokemon];
+}
+
+function findBase(id) {
+  return ELITE_TEAM.find((p) => p.id === id);
+}
+
+function setStatus(msg, duration) {
+  state.saveStatus = msg;
+  const el = document.getElementById('status-indicator');
+  if (el) el.textContent = msg || '\u00A0';
+  clearTimeout(saveStatusTimer);
+  if (duration > 0) {
+    saveStatusTimer = setTimeout(() => {
+      state.saveStatus = '';
+      const el2 = document.getElementById('status-indicator');
+      if (el2) el2.textContent = '\u00A0';
+    }, duration);
+  }
+}
+
+function showSaveStatus(msg, duration = 1500) {
+  setStatus(msg, duration);
+}
+
+function logAction(actionType, pokemonId, details, prevEvs) {
+  const pokemon = getAllPokemon().find((p) => p.id === pokemonId);
+  const entry = {
+    id: `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+    timestamp: Date.now(),
+    actionType,
+    pokemonId,
+    pokemonName: pokemon ? pokemon.name : '?',
+    pokemonSprite: pokemon ? pokemon.sprite : '❓',
+    details,
+    prevEvsSnapshot: prevEvs[pokemonId] ? { ...prevEvs[pokemonId] } : emptyEVs(),
+  };
+  state.history = [entry, ...state.history].slice(0, 50);
+}
+
+// ============================================================
+// ACTIONS
+// ============================================================
+function persistAndRender() {
+  if (saveToStorage()) showSaveStatus('Guardado ✓');
+  else showSaveStatus('Erro ao guardar', 2500);
+  scheduleAutoSync();
+  render();
+}
+
+function updateEV(pokemonId, stat, delta) {
+  const current = state.evs[pokemonId][stat];
+  const total = Object.values(state.evs[pokemonId]).reduce((a, b) => a + b, 0);
+  let newVal = current + delta;
+  if (newVal < 0) newVal = 0;
+  if (newVal > MAX_PER_STAT) newVal = MAX_PER_STAT;
+  const newTotal = total - current + newVal;
+  if (newTotal > MAX_TOTAL) newVal = current + (MAX_TOTAL - total);
+  if (newVal === current) return;
+
+  const statLabel = STAT_KEYS.find((s) => s.key === stat)?.label || stat;
+  const diff = newVal - current;
+  const prevEvs = { ...state.evs, [pokemonId]: { ...state.evs[pokemonId] } };
+  logAction('adjust', pokemonId, `${statLabel}: ${current} → ${newVal} (${diff > 0 ? '+' : ''}${diff})`, prevEvs);
+
+  state.evs = { ...state.evs, [pokemonId]: { ...state.evs[pokemonId], [stat]: newVal } };
+  persistAndRender();
+}
+
+function setEV(pokemonId, stat, value) {
+  let v = parseInt(value) || 0;
+  if (v < 0) v = 0;
+  if (v > MAX_PER_STAT) v = MAX_PER_STAT;
+  const others = Object.entries(state.evs[pokemonId]).filter(([k]) => k !== stat).reduce((a, [, b]) => a + b, 0);
+  if (others + v > MAX_TOTAL) v = MAX_TOTAL - others;
+  const current = state.evs[pokemonId][stat];
+  if (v === current) return;
+
+  const statLabel = STAT_KEYS.find((s) => s.key === stat)?.label || stat;
+  const prevEvs = { ...state.evs, [pokemonId]: { ...state.evs[pokemonId] } };
+  logAction('set', pokemonId, `${statLabel}: ${current} → ${v} (manual)`, prevEvs);
+
+  state.evs = { ...state.evs, [pokemonId]: { ...state.evs[pokemonId], [stat]: v } };
+  persistAndRender();
+}
+
+function resetPokemon(pokemonId) {
+  const total = Object.values(state.evs[pokemonId]).reduce((a, b) => a + b, 0);
+  if (total === 0) return;
+  const prevEvs = { ...state.evs, [pokemonId]: { ...state.evs[pokemonId] } };
+  logAction('reset', pokemonId, `Reset EVs (eram ${total} no total)`, prevEvs);
+  state.evs = { ...state.evs, [pokemonId]: emptyEVs() };
+  persistAndRender();
+}
+
+function applyRecommended(pokemonId) {
+  const p = getAllPokemon().find((p) => p.id === pokemonId);
+  if (!p || !p.recommended) return;
+  const newEvs = { ...emptyEVs(), ...p.recommended };
+  const prevEvs = { ...state.evs, [pokemonId]: { ...state.evs[pokemonId] } };
+  logAction('applyRecommended', pokemonId, `Spread recomendado aplicado`, prevEvs);
+  state.evs = { ...state.evs, [pokemonId]: newEvs };
+  persistAndRender();
+}
+
+function undoLastAction() {
+  if (state.history.length === 0) return;
+  const last = state.history[0];
+  state.evs = { ...state.evs, [last.pokemonId]: { ...last.prevEvsSnapshot } };
+  state.history = state.history.slice(1);
+  if (saveToStorage()) showSaveStatus('Revertido ↺');
+  scheduleAutoSync();
+  render();
+}
+
+function clearHistory() {
+  if (!confirm('Limpar todo o histórico? Isto não afeta os EVs atuais.')) return;
+  state.history = [];
+  persistAndRender();
+}
+
+function swapVariant(slotId, variantName) {
+  state.activeVariants = { ...state.activeVariants, [slotId]: variantName };
+  if (saveToStorage()) showSaveStatus('Variante trocada ✓');
+  scheduleAutoSync();
+  render();
+}
+
+function openAddModal() {
+  state.editingId = null;
+  state.form = { name: '', nature: 'Hardy', sprite: '⭐', color: '#8B5CF6' };
+  state.showAddModal = true;
+  render();
+}
+
+function openEditModal(p) {
+  state.editingId = p.id;
+  state.form = { name: p.name, nature: p.nature, sprite: p.sprite, color: p.color };
+  state.showAddModal = true;
+  render();
+}
+
+function closeAddModal() {
+  state.showAddModal = false;
+  render();
+}
+
+function savePokemon() {
+  if (!state.form.name.trim()) return;
+  if (state.editingId) {
+    state.customPokemon = state.customPokemon.map((p) =>
+      p.id === state.editingId
+        ? { ...p, name: state.form.name.trim(), nature: state.form.nature, sprite: state.form.sprite, color: state.form.color }
+        : p
+    );
+  } else {
+    const newPokemon = {
+      id: `custom_${Date.now()}`,
+      name: state.form.name.trim(),
+      nature: state.form.nature,
+      sprite: state.form.sprite,
+      color: state.form.color,
+      isCustom: true,
+      trainSpots: DEFAULT_SPOTS,
+    };
+    state.customPokemon = [...state.customPokemon, newPokemon];
+    state.evs = { ...state.evs, [newPokemon.id]: emptyEVs() };
+    state.selected = newPokemon.id;
+  }
+  state.showAddModal = false;
+  persistAndRender();
+}
+
+function deletePokemon(pokemonId) {
+  if (!confirm('Remover este Pokémon e os seus EVs?')) return;
+  state.customPokemon = state.customPokemon.filter((p) => p.id !== pokemonId);
+  const { [pokemonId]: _, ...rest } = state.evs;
+  state.evs = rest;
+  if (state.selected === pokemonId) state.selected = ELITE_TEAM[0].id;
+  persistAndRender();
+}
+
+// ============================================================
+// EXPORT / IMPORT
+// ============================================================
+function exportJSON() {
+  const data = {
+    evs: state.evs,
+    customPokemon: state.customPokemon,
+    history: state.history,
+    activeVariants: state.activeVariants,
+    exportedAt: new Date().toISOString(),
+    version: 1,
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ev-tracker-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showSaveStatus('Exportado ✓');
+}
+
+function importJSON() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      if (!confirm('Importar este ficheiro substitui os teus dados atuais. Continuar?')) return;
+      if (data.evs) state.evs = data.evs;
+      if (data.customPokemon) state.customPokemon = data.customPokemon;
+      if (data.history) state.history = data.history;
+      if (data.activeVariants) state.activeVariants = data.activeVariants;
+      initEVs();
+      persistAndRender();
+      showSaveStatus('Importado ✓', 2000);
+    } catch (err) {
+      showSaveStatus('Erro ao importar', 3000);
+    }
+  };
+  input.click();
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function render() {
+  const allPokemon = getAllPokemon();
+  const selectedPokemon = allPokemon.find((p) => p.id === state.selected) || allPokemon[0];
+  const selectedEVs = state.evs[selectedPokemon.id] || emptyEVs();
+  const totalEVs = Object.values(selectedEVs).reduce((a, b) => a + b, 0);
+  const remaining = MAX_TOTAL - totalEVs;
+
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="container">
+      ${renderHeader()}
+      ${renderEliteGrid(allPokemon)}
+      ${renderCustomGrid()}
+      ${renderDetail(selectedPokemon, selectedEVs, totalEVs, remaining)}
+      ${renderTips()}
+    </div>
+    ${state.showAddModal ? renderAddModal() : ''}
+    ${state.showHistoryModal ? renderHistoryModal() : ''}
+    ${state.showSyncModal ? renderSyncModal() : ''}
+  `;
+  attachListeners();
+}
+
+function renderHeader() {
+  return `
+    <header class="header">
+      <div class="header-top">
+        <div>
+          <div class="title">EV TRACKER</div>
+          <div class="subtitle">FireRed Elite 4 Run · Gen 3</div>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-emerald" data-action="export">
+            <span>⬇</span><span>Export</span>
+          </button>
+          <button class="btn btn-emerald" data-action="import">
+            <span>⬆</span><span>Import</span>
+          </button>
+          <button class="btn btn-purple" data-action="sync">
+            <span>☁</span><span>Sync</span>
+          </button>
+          <button class="btn btn-amber" data-action="undo" ${state.history.length === 0 ? 'disabled' : ''}>
+            <span>↺</span><span>Undo</span>
+          </button>
+          <button class="btn btn-indigo" data-action="history">
+            <span>📜</span><span>Histórico${state.history.length > 0 ? ` (${state.history.length})` : ''}</span>
+          </button>
+          <div style="text-align:right;margin-left:8px">
+            <div style="font-size:10px;color:var(--text-dim);letter-spacing:0.2em;text-transform:uppercase">Status</div>
+            <div class="status" id="status-indicator">${state.saveStatus || '\u00A0'}</div>
+          </div>
+        </div>
+      </div>
+    </header>
+  `;
+}
+
+function renderPokemonCard(p, accentColor) {
+  const pTotal = Object.values(state.evs[p.id] || emptyEVs()).reduce((a, b) => a + b, 0);
+  const isDone = pTotal >= MAX_TOTAL - 2;
+  const isSelected = state.selected === p.id;
+  const base = findBase(p.id);
+  const hasVariants = base && base.variants && base.variants.length > 1;
+  const cardStyle = isSelected ? `
+    border-color:${accentColor};
+    background:${accentColor}1a;
+    --card-shadow:${accentColor}4d;
+  ` : '';
+
+  return `
+    <button class="p-card ${isSelected ? 'selected' : ''}" data-action="select" data-id="${p.id}" style="${cardStyle}">
+      <div class="p-card-sprite">
+        ${p.sprite}
+        ${hasVariants ? '<span class="p-card-variant-badge">⇄</span>' : ''}
+      </div>
+      <div class="p-card-name">${p.name}</div>
+      <div class="p-card-bar">
+        <div class="p-card-bar-fill" style="width:${(pTotal / MAX_TOTAL) * 100}%;background:${isDone ? 'var(--success)' : p.color}"></div>
+      </div>
+      <div class="p-card-total">${pTotal}/${MAX_TOTAL}</div>
+    </button>
+  `;
+}
+
+function renderEliteGrid(allPokemon) {
+  const resolved = ELITE_TEAM.map(resolvePokemon);
+  return `
+    <div style="margin-bottom:16px">
+      <div class="section-label" style="color:rgba(251, 191, 36, 0.8)">★ Elite Team</div>
+      <div class="grid grid-pokemon">
+        ${resolved.map((p) => renderPokemonCard(p, '#fbbf24')).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderCustomGrid() {
+  return `
+    <div style="margin-bottom:20px">
+      <div class="section-label" style="color:rgba(216, 180, 254, 0.8)">
+        <span>✦ Extra Pokémon${state.customPokemon.length > 0 ? ` (${state.customPokemon.length})` : ''}</span>
+        <button class="btn btn-purple" data-action="add">+ Adicionar</button>
+      </div>
+      ${state.customPokemon.length === 0
+        ? '<div class="extras-empty">Sem Pokémon extra adicionados. Usa "+ Adicionar" para incluir outros que queiras treinar.</div>'
+        : `<div class="grid grid-pokemon">${state.customPokemon.map((p) => renderPokemonCard(p, '#a855f7')).join('')}</div>`
+      }
+    </div>
+  `;
+}
+
+function renderVariantSelector(selectedPokemon) {
+  const base = findBase(state.selected);
+  if (!base || !base.variants || base.variants.length < 2) return '';
+  const currentName = state.activeVariants[state.selected] || base.variants[0].name;
+  const currentVariant = base.variants.find((v) => v.name === currentName);
+
+  return `
+    <div class="variant-selector">
+      <div class="variant-label"><span>🔄</span> Variante do Slot</div>
+      <div class="variant-options">
+        ${base.variants.map((v) => {
+          const active = v.name === currentName;
+          const style = active ? `border-color:${v.color};background:${v.color}22;box-shadow:0 0 12px ${v.color}66;color:${v.color}` : '';
+          return `
+            <button class="variant-btn ${active ? 'active' : ''}" data-action="swap-variant" data-variant="${v.name}" style="${style}">
+              <span style="font-size:16px">${v.sprite}</span>
+              <span>${v.name}</span>
+            </button>
+          `;
+        }).join('')}
+      </div>
+      ${currentVariant && currentVariant.note ? `<div class="variant-note">${currentVariant.note}</div>` : ''}
+      <div style="font-size:10px;color:var(--text-dim);margin-top:6px;line-height:1.4">
+        Trocar de variante não afeta os EVs atribuídos — só muda natureza, ícone, target e moveset.
+      </div>
+    </div>
+  `;
+}
+
+function renderDetail(selectedPokemon, selectedEVs, totalEVs, remaining) {
+  const styleVars = `--selected-color:${selectedPokemon.color};--sprite-bg:${selectedPokemon.color}22`;
+  return `
+    <div class="detail" style="${styleVars}">
+      <div class="detail-header">
+        <div class="detail-identity">
+          <div class="detail-sprite">${selectedPokemon.sprite}</div>
+          <div>
+            <div class="detail-name">${selectedPokemon.name}</div>
+            <div class="detail-nature">
+              NAT. ${selectedPokemon.nature.toUpperCase()}
+              ${selectedPokemon.isCustom ? '<span class="custom-badge">Custom</span>' : ''}
+            </div>
+          </div>
+        </div>
+        <div class="detail-total">
+          <div class="detail-total-label">Total</div>
+          <div class="detail-total-value ${totalEVs >= MAX_TOTAL ? 'complete' : ''}">
+            ${totalEVs}<span class="detail-total-slash">/${MAX_TOTAL}</span>
+          </div>
+          <div class="detail-total-remaining">
+            ${remaining > 0 ? `${remaining} restantes` : 'MÁXIMO ATINGIDO'}
+          </div>
+        </div>
+      </div>
+      ${renderVariantSelector(selectedPokemon)}
+      <div class="stats">
+        ${STAT_KEYS.map((stat) => renderStatRow(selectedPokemon, selectedEVs, totalEVs, stat)).join('')}
+      </div>
+      <div class="actions">
+        ${selectedPokemon.recommended ? `
+          <button class="btn btn-primary" data-action="apply-recommended">Aplicar Spread Recomendado</button>
+        ` : ''}
+        <button class="btn btn-red" data-action="reset">Reset EVs</button>
+        ${selectedPokemon.isCustom ? `
+          <button class="btn btn-purple" data-action="edit-custom">Editar</button>
+          <button class="btn btn-red" data-action="delete-custom" style="margin-left:auto">Remover</button>
+        ` : ''}
+      </div>
+      ${renderMoveset(selectedPokemon)}
+    </div>
+  `;
+}
+
+function renderStatRow(selectedPokemon, selectedEVs, totalEVs, stat) {
+  const val = selectedEVs[stat.key] || 0;
+  const pct = (val / MAX_PER_STAT) * 100;
+  const isMax = val >= MAX_PER_STAT;
+  const recommended = (selectedPokemon.recommended && selectedPokemon.recommended[stat.key]) || 0;
+  const trainSpot = (selectedPokemon.trainSpots && selectedPokemon.trainSpots[stat.key]) || DEFAULT_SPOTS[stat.key];
+  return `
+    <div class="stat-row">
+      <div class="stat-row-header">
+        <div class="stat-label">
+          <span>${stat.label}</span>
+          ${recommended > 0 ? `<span class="stat-target">Target ${recommended}</span>` : ''}
+        </div>
+        <div class="stat-controls">
+          <button class="stat-btn minus" data-action="dec" data-stat="${stat.key}" ${val <= 0 ? 'disabled' : ''}>−</button>
+          <input class="stat-input" type="number" min="0" max="${MAX_PER_STAT}" value="${val}" data-stat="${stat.key}">
+          <button class="stat-btn plus" data-action="inc" data-stat="${stat.key}" ${val >= MAX_PER_STAT || totalEVs >= MAX_TOTAL ? 'disabled' : ''}>+</button>
+        </div>
+      </div>
+      <div class="stat-bar-wrapper">
+        <div class="stat-bar-fill ${isMax ? 'max' : ''}" style="width:${pct}%;background:linear-gradient(90deg, ${selectedPokemon.color}, ${selectedPokemon.color}dd)"></div>
+        ${recommended > 0 ? `<div class="stat-bar-target-marker" style="left:${(recommended / MAX_PER_STAT) * 100}%"></div>` : ''}
+      </div>
+      <div class="stat-train-spot">${trainSpot}</div>
+    </div>
+  `;
+}
+
+function renderMoveset(selectedPokemon) {
+  if (!selectedPokemon.moves || selectedPokemon.moves.length === 0) return '';
+  return `
+    <div class="moveset">
+      <div class="moveset-label"><span>⚔</span> Moveset Recomendado</div>
+      <div class="moveset-grid">
+        ${selectedPokemon.moves.map((mv) => `
+          <div class="move-item">
+            <div class="move-name">${mv.name}</div>
+            <div class="move-source">${mv.source}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderTips() {
+  return `
+    <div class="tips">
+      <div class="tips-header">Lembretes Gen 3</div>
+      Máx. <strong>252 EVs</strong> por stat, <strong>510 no total</strong>. Cada 4 EVs = 1 ponto de stat ao nível 100.
+      <strong>Vitamins</strong> (HP Up, Protein, etc) dão 10 EVs cada, máximo 100 por stat. Os dados guardam automaticamente
+      no browser deste dispositivo; usa <strong>Export/Import</strong> ou <strong>Sync via Gist</strong> para moveres entre devices.
+    </div>
+  `;
+}
+
+function renderAddModal() {
+  return `
+    <div class="modal-backdrop" data-action="close-modal">
+      <div class="modal" style="--modal-border:rgba(168, 85, 247, 0.4);--modal-title-color:#d8b4fe" data-stop-propagation>
+        <div class="modal-header">
+          <div class="modal-title">${state.editingId ? 'Editar Pokémon' : 'Novo Pokémon'}</div>
+          <button class="modal-close" data-action="close-modal">×</button>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nome</label>
+          <input class="form-input" type="text" id="form-name" maxlength="20" value="${escapeHtml(state.form.name)}" placeholder="Ex: Snorlax, Pidgeot...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Natureza</label>
+          <select class="form-select" id="form-nature">
+            ${NATURES.map((n) => `<option value="${n}" ${n === state.form.nature ? 'selected' : ''}>${n}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ícone</label>
+          <div class="form-grid-icons">
+            ${SPRITE_OPTIONS.map((s) => `
+              <button class="icon-btn ${s === state.form.sprite ? 'selected' : ''}" data-action="set-sprite" data-sprite="${s}">${s}</button>
+            `).join('')}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cor</label>
+          <div class="form-grid-colors">
+            ${COLOR_OPTIONS.map((c) => `
+              <button class="color-btn ${c === state.form.color ? 'selected' : ''}" data-action="set-color" data-color="${c}" style="background:${c}"></button>
+            `).join('')}
+          </div>
+        </div>
+        <div class="preview" style="--preview-bg:${state.form.color}22;--preview-color:${state.form.color}">
+          <div class="preview-label">Preview</div>
+          <div class="preview-sprite">${state.form.sprite}</div>
+          <div>
+            <div class="preview-info-name">${escapeHtml(state.form.name) || 'Sem nome'}</div>
+            <div class="preview-info-nature">Nat. ${state.form.nature}</div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn" data-action="close-modal">Cancelar</button>
+          <button class="btn btn-primary" data-action="save-pokemon" ${!state.form.name.trim() ? 'disabled' : ''}>
+            ${state.editingId ? 'Guardar' : 'Adicionar'}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderHistoryModal() {
+  return `
+    <div class="modal-backdrop" data-action="close-history">
+      <div class="modal" style="--modal-border:rgba(99, 102, 241, 0.4);--modal-title-color:#a5b4fc;max-width:680px" data-stop-propagation>
+        <div class="modal-header">
+          <div class="modal-title">📜 Histórico de EVs</div>
+          <button class="modal-close" data-action="close-history">×</button>
+        </div>
+        ${state.history.length === 0 ? `
+          <div class="history-empty">
+            <div class="history-empty-icon">⌛</div>
+            <div>Sem alterações registadas ainda.</div>
+            <div style="font-size:10px;margin-top:4px">Começa a ajustar EVs para criar histórico.</div>
+          </div>
+        ` : `
+          <div class="history-top-bar">
+            <div>${state.history.length} ${state.history.length === 1 ? 'entrada' : 'entradas'} · mais recente no topo</div>
+            <button class="btn btn-red" style="padding:4px 8px;font-size:9px" data-action="clear-history">Limpar</button>
+          </div>
+          <div class="history-list">
+            ${state.history.map((entry, idx) => {
+              const d = new Date(entry.timestamp);
+              const time = d.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+              const date = d.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' });
+              const labels = { adjust: 'AJUSTE', set: 'MANUAL', reset: 'RESET', applyRecommended: 'RECOMENDADO' };
+              return `
+                <div class="history-item ${idx === 0 ? 'latest' : ''}">
+                  <div class="history-sprite">${entry.pokemonSprite}</div>
+                  <div class="history-body">
+                    <div class="history-meta">
+                      <span class="history-pokemon-name">${entry.pokemonName}</span>
+                      <span class="history-tag ${entry.actionType}">${labels[entry.actionType] || entry.actionType}</span>
+                      ${idx === 0 ? '<span class="history-next-undo">↺ próximo undo</span>' : ''}
+                    </div>
+                    <div class="history-details">${escapeHtml(entry.details)}</div>
+                  </div>
+                  <div class="history-time">
+                    <div class="history-time-hour">${time}</div>
+                    <div class="history-time-date">${date}</div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `}
+      </div>
+    </div>
+  `;
+}
+
+function renderSyncModal() {
+  return `
+    <div class="modal-backdrop" data-action="close-sync">
+      <div class="modal" style="--modal-border:rgba(168, 85, 247, 0.4);--modal-title-color:#d8b4fe" data-stop-propagation>
+        <div class="modal-header">
+          <div class="modal-title">☁ Sync entre Dispositivos</div>
+          <button class="modal-close" data-action="close-sync">×</button>
+        </div>
+        <div class="sync-help">
+          A sincronização usa um <strong>GitHub Gist privado</strong> como "base de dados" entre os teus dispositivos. Setup:
+        </div>
+        <ol class="sync-help" style="padding-left:18px;line-height:1.8">
+          <li>Vai a <code>github.com/settings/tokens</code> → Generate new token (classic) → só permissão <code>gist</code></li>
+          <li>Cria um Gist em <code>gist.github.com</code> (pode ser secret) com um ficheiro chamado <code>ev-tracker-data.json</code> contendo <code>{}</code></li>
+          <li>Cola o ID do Gist (o long hash no URL) e o token aqui</li>
+          <li>Depois disso, faz "Upload" para enviar; "Download" no outro device para receber</li>
+        </ol>
+
+        <div class="form-group" style="margin-top:16px">
+          <label class="form-label">Gist ID</label>
+          <input class="form-input" type="text" id="sync-gist-id" value="${escapeHtml(state.syncGistId)}" placeholder="Exemplo: a1b2c3d4e5...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Token GitHub (apenas gist)</label>
+          <input class="form-input" type="password" id="sync-token" value="${escapeHtml(state.syncToken)}" placeholder="ghp_...">
+        </div>
+
+        <div class="sync-status" id="sync-status"></div>
+
+        <div class="modal-actions" style="margin-top:16px">
+          <button class="btn" data-action="sync-save">Guardar Credenciais</button>
+          <button class="btn btn-amber" data-action="sync-download">⬇ Download</button>
+          <button class="btn btn-emerald" data-action="sync-upload">⬆ Upload</button>
+        </div>
+
+        <div class="sync-section">
+          <div class="sync-section-title">⚠ Atenção</div>
+          <div class="sync-help">
+            O token fica guardado no <code>localStorage</code> deste device. Se partilhares o device com outras pessoas,
+            ou se este site for comprometido, o token pode ser exposto. Usa um token <strong>só com permissão gist</strong>
+            e revoga-o em github.com/settings/tokens se suspeitares de algo. Após guardar credenciais, cada alteração
+            faz auto-upload passado 3 segundos.
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================
+// UTILS
+// ============================================================
+function escapeHtml(s) {
+  if (typeof s !== 'string') return '';
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// ============================================================
+// EVENT HANDLING (delegation)
+// ============================================================
+function attachListeners() {
+  const app = document.getElementById('app');
+  app.onclick = (e) => {
+    const t = e.target.closest('[data-action]');
+    if (!t) return;
+    const action = t.dataset.action;
+    const id = t.dataset.id;
+
+    if (action === 'select') { state.selected = id; render(); return; }
+    if (action === 'export') { exportJSON(); return; }
+    if (action === 'import') { importJSON(); return; }
+    if (action === 'sync') { state.showSyncModal = true; render(); return; }
+    if (action === 'undo') { undoLastAction(); return; }
+    if (action === 'history') { state.showHistoryModal = true; render(); return; }
+    if (action === 'add') { openAddModal(); return; }
+    if (action === 'reset') { resetPokemon(state.selected); return; }
+    if (action === 'apply-recommended') { applyRecommended(state.selected); return; }
+    if (action === 'edit-custom') {
+      const p = state.customPokemon.find((x) => x.id === state.selected);
+      if (p) openEditModal(p);
+      return;
+    }
+    if (action === 'delete-custom') { deletePokemon(state.selected); return; }
+    if (action === 'inc') { updateEV(state.selected, t.dataset.stat, 1); return; }
+    if (action === 'dec') { updateEV(state.selected, t.dataset.stat, -1); return; }
+    if (action === 'swap-variant') { swapVariant(state.selected, t.dataset.variant); return; }
+    if (action === 'close-modal') {
+      // only close if clicking backdrop or explicit close btn
+      if (t.classList.contains('modal-backdrop') || t.classList.contains('modal-close') || t.closest('.btn')) {
+        closeAddModal();
+      }
+      return;
+    }
+    if (action === 'set-sprite') { state.form = { ...state.form, sprite: t.dataset.sprite }; render(); return; }
+    if (action === 'set-color') { state.form = { ...state.form, color: t.dataset.color }; render(); return; }
+    if (action === 'save-pokemon') { savePokemon(); return; }
+    if (action === 'close-history') {
+      if (t.classList.contains('modal-backdrop') || t.classList.contains('modal-close') || t.closest('.btn')) {
+        state.showHistoryModal = false; render();
+      }
+      return;
+    }
+    if (action === 'clear-history') { clearHistory(); return; }
+    if (action === 'close-sync') {
+      if (t.classList.contains('modal-backdrop') || t.classList.contains('modal-close')) {
+        state.showSyncModal = false; render();
+      }
+      return;
+    }
+    if (action === 'sync-save') {
+      const gistId = document.getElementById('sync-gist-id').value.trim();
+      const token = document.getElementById('sync-token').value.trim();
+      state.syncGistId = gistId;
+      state.syncToken = token;
+      saveToStorage();
+      setSyncStatus('Credenciais guardadas ✓', 'ok');
+      return;
+    }
+    if (action === 'sync-upload') {
+      state.syncGistId = document.getElementById('sync-gist-id').value.trim();
+      state.syncToken = document.getElementById('sync-token').value.trim();
+      saveToStorage();
+      syncToGist();
+      return;
+    }
+    if (action === 'sync-download') {
+      state.syncGistId = document.getElementById('sync-gist-id').value.trim();
+      state.syncToken = document.getElementById('sync-token').value.trim();
+      saveToStorage();
+      syncFromGist();
+      return;
+    }
+  };
+
+  // Prevent backdrop click from triggering when clicking inside the modal
+  document.querySelectorAll('[data-stop-propagation]').forEach((el) => {
+    el.onclick = (e) => e.stopPropagation();
+  });
+
+  // Form inputs
+  const formName = document.getElementById('form-name');
+  if (formName) {
+    formName.oninput = (e) => { state.form = { ...state.form, name: e.target.value }; };
+  }
+  const formNature = document.getElementById('form-nature');
+  if (formNature) {
+    formNature.onchange = (e) => { state.form = { ...state.form, nature: e.target.value }; };
+  }
+
+  // Stat number inputs
+  document.querySelectorAll('.stat-input').forEach((inp) => {
+    inp.onchange = (e) => { setEV(state.selected, inp.dataset.stat, e.target.value); };
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+loadFromStorage();
+initEVs();
+render();
+</script>
+</body>
+</html>
