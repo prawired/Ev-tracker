@@ -1151,16 +1151,19 @@ const state = {
   selected: ELITE_TEAM[0].id,
   history: [],
   activeVariants: {},
-  hiddenElite: {},      // { pokemonId: true } — hide elite members user doesn't want
-  customTargets: {},    // { pokemonId: { hp, atk, def, spAtk, spDef, speed } } — override defaults
+  hiddenElite: {},
+  customTargets: {},
   syncGistId: '',
   syncToken: '',
+  lastLocalModified: 0,    // timestamp of last local change
+  lastPulledGistTimestamp: 0,  // timestamp from the last Gist we pulled
+  autoSyncEnabled: true,   // auto-pull on load/focus
   saveStatus: '',
   showAddModal: false,
   showHistoryModal: false,
   showSyncModal: false,
   editingId: null,
-  editingTargets: null,  // pokemonId currently being target-edited
+  editingTargets: null,
   form: { name: '', nature: 'Hardy', sprite: '⭐', color: '#8B5CF6' },
   syncStatus: '',
 };
@@ -1187,13 +1190,20 @@ function loadFromStorage() {
     if (data.customTargets) state.customTargets = data.customTargets;
     if (data.syncGistId) state.syncGistId = data.syncGistId;
     if (data.syncToken) state.syncToken = data.syncToken;
+    if (typeof data.lastLocalModified === 'number') state.lastLocalModified = data.lastLocalModified;
+    if (typeof data.lastPulledGistTimestamp === 'number') state.lastPulledGistTimestamp = data.lastPulledGistTimestamp;
+    if (typeof data.autoSyncEnabled === 'boolean') state.autoSyncEnabled = data.autoSyncEnabled;
   } catch (e) {
     console.warn('Failed to load:', e);
   }
 }
 
-function saveToStorage() {
+function saveToStorage(opts = {}) {
   try {
+    // Mark as locally modified unless we're explicitly saving from a remote pull
+    if (!opts.fromRemote) {
+      state.lastLocalModified = Date.now();
+    }
     const data = {
       evs: state.evs,
       customPokemon: state.customPokemon,
@@ -1203,7 +1213,9 @@ function saveToStorage() {
       customTargets: state.customTargets,
       syncGistId: state.syncGistId,
       syncToken: state.syncToken,
-      lastModified: Date.now(),
+      lastLocalModified: state.lastLocalModified,
+      lastPulledGistTimestamp: state.lastPulledGistTimestamp,
+      autoSyncEnabled: state.autoSyncEnabled,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     return true;
@@ -1231,14 +1243,14 @@ async function syncToGist() {
   }
   setSyncStatus('A sincronizar...', '');
   try {
-    const data = {
+    const payload = {
       evs: state.evs,
       customPokemon: state.customPokemon,
       history: state.history,
       activeVariants: state.activeVariants,
       hiddenElite: state.hiddenElite,
       customTargets: state.customTargets,
-      lastModified: Date.now(),
+      lastModified: state.lastLocalModified || Date.now(),
     };
     const res = await fetch(`https://api.github.com/gists/${state.syncGistId}`, {
       method: 'PATCH',
@@ -1247,22 +1259,24 @@ async function syncToGist() {
         'Accept': 'application/vnd.github+json',
       },
       body: JSON.stringify({
-        files: { 'ev-tracker-data.json': { content: JSON.stringify(data, null, 2) } },
+        files: { 'ev-tracker-data.json': { content: JSON.stringify(payload, null, 2) } },
       }),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    state.lastPulledGistTimestamp = payload.lastModified;
+    saveToStorage({ fromRemote: true });
     setSyncStatus('Enviado para Gist ✓', 'ok');
   } catch (e) {
     setSyncStatus(`Erro: ${e.message}`, 'err');
   }
 }
 
-async function syncFromGist() {
+async function syncFromGist(opts = {}) {
   if (!state.syncGistId) {
-    setSyncStatus('Falta Gist ID', 'err');
-    return;
+    if (!opts.silent) setSyncStatus('Falta Gist ID', 'err');
+    return { status: 'no-credentials' };
   }
-  setSyncStatus('A carregar...', '');
+  if (!opts.silent) setSyncStatus('A carregar...', '');
   try {
     const headers = { 'Accept': 'application/vnd.github+json' };
     if (state.syncToken) headers['Authorization'] = `token ${state.syncToken}`;
@@ -1272,19 +1286,51 @@ async function syncFromGist() {
     const file = gist.files && gist.files['ev-tracker-data.json'];
     if (!file) throw new Error('Ficheiro ev-tracker-data.json não encontrado no Gist');
     const data = JSON.parse(file.content);
+    const remoteTs = typeof data.lastModified === 'number' ? data.lastModified : 0;
+
+    // Conflict check: if local has unsynced newer changes, skip auto-pull
+    if (opts.skipIfLocalNewer && state.lastLocalModified > remoteTs && state.lastLocalModified > state.lastPulledGistTimestamp) {
+      if (!opts.silent) setSyncStatus('Mudanças locais mais recentes — não sincronizado', 'err');
+      return { status: 'local-newer', localTs: state.lastLocalModified, remoteTs };
+    }
+
+    // Same version we already have — nothing to do
+    if (opts.skipIfSame && remoteTs > 0 && remoteTs === state.lastPulledGistTimestamp) {
+      if (!opts.silent) setSyncStatus('Já estás atualizado ✓', 'ok');
+      return { status: 'same', remoteTs };
+    }
+
     if (data.evs) state.evs = data.evs;
     if (data.customPokemon) state.customPokemon = data.customPokemon;
     if (data.history) state.history = data.history;
     if (data.activeVariants) state.activeVariants = data.activeVariants;
     if (data.hiddenElite) state.hiddenElite = data.hiddenElite;
     if (data.customTargets) state.customTargets = data.customTargets;
+    state.lastPulledGistTimestamp = remoteTs;
+    state.lastLocalModified = remoteTs; // aligns local "clock" with remote
     initEVs();
-    saveToStorage();
+    saveToStorage({ fromRemote: true });
     render();
-    setSyncStatus('Carregado do Gist ✓', 'ok');
+    if (!opts.silent) setSyncStatus('Carregado do Gist ✓', 'ok');
+    return { status: 'updated', remoteTs };
   } catch (e) {
-    setSyncStatus(`Erro: ${e.message}`, 'err');
+    if (!opts.silent) setSyncStatus(`Erro: ${e.message}`, 'err');
+    return { status: 'error', error: e.message };
   }
+}
+
+// Auto-pull wrapper: runs on load/focus. Silently handles cases where
+// there's no sync configured or local has newer unsynced changes.
+async function autoPullIfNewer() {
+  if (!state.autoSyncEnabled) return;
+  if (!state.syncGistId) return;
+  const result = await syncFromGist({ silent: true, skipIfLocalNewer: true, skipIfSame: true });
+  if (result.status === 'updated') {
+    setStatus('Dados atualizados do Gist ✓', 3000);
+  } else if (result.status === 'local-newer') {
+    setStatus('Mudanças locais não sincronizadas', 3000);
+  }
+  // other statuses (same, no-credentials, error) are silent
 }
 
 function setSyncStatus(msg, type) {
@@ -2093,6 +2139,22 @@ function renderSyncModal() {
         </div>
 
         <div class="sync-section">
+          <div class="sync-section-title">⚙ Auto-sync</div>
+          <label style="display:flex;gap:10px;align-items:center;cursor:pointer;padding:8px;border-radius:6px;background:rgba(0,0,0,0.3);border:1px solid var(--border);margin-bottom:8px">
+            <input type="checkbox" id="auto-sync-toggle" ${state.autoSyncEnabled ? 'checked' : ''} style="width:16px;height:16px;accent-color:var(--accent)">
+            <div style="flex:1">
+              <div style="font-size:11px;font-weight:bold;color:var(--text);letter-spacing:0.1em;text-transform:uppercase">Puxar mudanças automaticamente</div>
+              <div style="font-size:10px;color:var(--text-muted);line-height:1.4;margin-top:2px">Quando abrires a app ou voltares à aba, verifica o Gist e descarrega se houver mudanças mais recentes (vindas de outro dispositivo).</div>
+            </div>
+          </label>
+          ${state.lastPulledGistTimestamp > 0 ? `
+            <div style="font-size:10px;color:var(--text-dim);padding-left:4px">
+              Última sincronização: ${new Date(state.lastPulledGistTimestamp).toLocaleString('pt-PT')}
+            </div>
+          ` : ''}
+        </div>
+
+        <div class="sync-section">
           <div class="sync-section-title">⚠ Atenção</div>
           <div class="sync-help">
             O token fica guardado no <code>localStorage</code> deste device. Se partilhares o device com outras pessoas,
@@ -2256,6 +2318,16 @@ function attachListeners() {
       render(); // re-render to update target markers on bar
     };
   });
+
+  // Auto-sync toggle checkbox
+  const autoSyncToggle = document.getElementById('auto-sync-toggle');
+  if (autoSyncToggle) {
+    autoSyncToggle.onchange = (e) => {
+      state.autoSyncEnabled = e.target.checked;
+      saveToStorage({ fromRemote: true }); // preserve timestamp
+      setSyncStatus(state.autoSyncEnabled ? 'Auto-sync ligado ✓' : 'Auto-sync desligado', 'ok');
+    };
+  }
 }
 
 // ============================================================
@@ -2264,6 +2336,25 @@ function attachListeners() {
 loadFromStorage();
 initEVs();
 render();
+
+// Auto-pull on page load (if configured)
+if (state.autoSyncEnabled && state.syncGistId) {
+  autoPullIfNewer();
+}
+
+// Auto-pull when tab becomes visible again (came back from another device)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && state.autoSyncEnabled && state.syncGistId) {
+    autoPullIfNewer();
+  }
+});
+
+// Also catch window focus for older browsers
+window.addEventListener('focus', () => {
+  if (state.autoSyncEnabled && state.syncGistId) {
+    autoPullIfNewer();
+  }
+});
 </script>
 </body>
 </html>
