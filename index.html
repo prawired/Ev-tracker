@@ -1151,6 +1151,8 @@ const state = {
   selected: ELITE_TEAM[0].id,
   history: [],
   activeVariants: {},
+  hiddenElite: {},      // { pokemonId: true } — hide elite members user doesn't want
+  customTargets: {},    // { pokemonId: { hp, atk, def, spAtk, spDef, speed } } — override defaults
   syncGistId: '',
   syncToken: '',
   saveStatus: '',
@@ -1158,6 +1160,7 @@ const state = {
   showHistoryModal: false,
   showSyncModal: false,
   editingId: null,
+  editingTargets: null,  // pokemonId currently being target-edited
   form: { name: '', nature: 'Hardy', sprite: '⭐', color: '#8B5CF6' },
   syncStatus: '',
 };
@@ -1180,6 +1183,8 @@ function loadFromStorage() {
     if (data.customPokemon) state.customPokemon = data.customPokemon;
     if (data.history) state.history = data.history;
     if (data.activeVariants) state.activeVariants = data.activeVariants;
+    if (data.hiddenElite) state.hiddenElite = data.hiddenElite;
+    if (data.customTargets) state.customTargets = data.customTargets;
     if (data.syncGistId) state.syncGistId = data.syncGistId;
     if (data.syncToken) state.syncToken = data.syncToken;
   } catch (e) {
@@ -1194,6 +1199,8 @@ function saveToStorage() {
       customPokemon: state.customPokemon,
       history: state.history,
       activeVariants: state.activeVariants,
+      hiddenElite: state.hiddenElite,
+      customTargets: state.customTargets,
       syncGistId: state.syncGistId,
       syncToken: state.syncToken,
       lastModified: Date.now(),
@@ -1229,6 +1236,8 @@ async function syncToGist() {
       customPokemon: state.customPokemon,
       history: state.history,
       activeVariants: state.activeVariants,
+      hiddenElite: state.hiddenElite,
+      customTargets: state.customTargets,
       lastModified: Date.now(),
     };
     const res = await fetch(`https://api.github.com/gists/${state.syncGistId}`, {
@@ -1267,6 +1276,8 @@ async function syncFromGist() {
     if (data.customPokemon) state.customPokemon = data.customPokemon;
     if (data.history) state.history = data.history;
     if (data.activeVariants) state.activeVariants = data.activeVariants;
+    if (data.hiddenElite) state.hiddenElite = data.hiddenElite;
+    if (data.customTargets) state.customTargets = data.customTargets;
     initEVs();
     saveToStorage();
     render();
@@ -1310,15 +1321,49 @@ function scheduleAutoSync() {
 // HELPERS
 // ============================================================
 function resolvePokemon(base) {
-  if (!base.variants || base.variants.length === 0) return base;
-  const activeName = state.activeVariants[base.id];
-  if (!activeName) return base;
-  const v = base.variants.find((x) => x.name === activeName);
-  if (!v) return base;
-  return { ...base, name: v.name, nature: v.nature, sprite: v.sprite, color: v.color, recommended: v.recommended, moves: v.moves };
+  let resolved = base;
+  if (base.variants && base.variants.length > 0) {
+    const activeName = state.activeVariants[base.id];
+    if (activeName) {
+      const v = base.variants.find((x) => x.name === activeName);
+      if (v) {
+        resolved = { ...base, name: v.name, nature: v.nature, sprite: v.sprite, color: v.color, recommended: v.recommended, moves: v.moves };
+      }
+    }
+  }
+  // Apply custom targets override if any
+  const custom = state.customTargets[base.id];
+  if (custom) {
+    // Only keep keys with value > 0 so the "target markers" still work as expected
+    const filtered = {};
+    for (const k of Object.keys(custom)) {
+      const v = custom[k];
+      if (typeof v === 'number' && v > 0) filtered[k] = v;
+    }
+    resolved = { ...resolved, recommended: filtered };
+  }
+  return resolved;
 }
 
 function getAllPokemon() {
+  const elite = ELITE_TEAM.filter((p) => !state.hiddenElite[p.id]).map(resolvePokemon);
+  const custom = state.customPokemon.map((p) => {
+    const customT = state.customTargets[p.id];
+    if (customT) {
+      const filtered = {};
+      for (const k of Object.keys(customT)) {
+        const v = customT[k];
+        if (typeof v === 'number' && v > 0) filtered[k] = v;
+      }
+      return { ...p, recommended: filtered };
+    }
+    return p;
+  });
+  return [...elite, ...custom];
+}
+
+function getAllPokemonIncludingHidden() {
+  // Used internally when we need to reference even hidden pokémon
   return [...ELITE_TEAM.map(resolvePokemon), ...state.customPokemon];
 }
 
@@ -1497,7 +1542,57 @@ function deletePokemon(pokemonId) {
   state.customPokemon = state.customPokemon.filter((p) => p.id !== pokemonId);
   const { [pokemonId]: _, ...rest } = state.evs;
   state.evs = rest;
-  if (state.selected === pokemonId) state.selected = ELITE_TEAM[0].id;
+  // also clean up custom targets
+  if (state.customTargets[pokemonId]) {
+    const { [pokemonId]: __, ...restTargets } = state.customTargets;
+    state.customTargets = restTargets;
+  }
+  if (state.selected === pokemonId) state.selected = getAllPokemon()[0]?.id || ELITE_TEAM[0].id;
+  persistAndRender();
+}
+
+function hideElite(pokemonId) {
+  if (!confirm('Esconder este Pokémon da Elite Team? Os EVs ficam guardados se quiseres recuperar depois.')) return;
+  state.hiddenElite = { ...state.hiddenElite, [pokemonId]: true };
+  if (state.selected === pokemonId) {
+    const firstVisible = getAllPokemon()[0];
+    if (firstVisible) state.selected = firstVisible.id;
+  }
+  persistAndRender();
+}
+
+function restoreElite(pokemonId) {
+  const { [pokemonId]: _, ...rest } = state.hiddenElite;
+  state.hiddenElite = rest;
+  state.selected = pokemonId;
+  persistAndRender();
+}
+
+function startEditingTargets(pokemonId) {
+  state.editingTargets = pokemonId;
+  render();
+}
+
+function stopEditingTargets() {
+  state.editingTargets = null;
+  render();
+}
+
+function setTarget(pokemonId, stat, value) {
+  let v = parseInt(value);
+  if (isNaN(v) || v < 0) v = 0;
+  if (v > MAX_PER_STAT) v = MAX_PER_STAT;
+  const current = state.customTargets[pokemonId] || {};
+  const newTargets = { ...current, [stat]: v };
+  state.customTargets = { ...state.customTargets, [pokemonId]: newTargets };
+  saveToStorage();
+  scheduleAutoSync();
+}
+
+function resetTargetsToDefault(pokemonId) {
+  if (!confirm('Repor targets originais? Os teus valores personalizados serão apagados.')) return;
+  const { [pokemonId]: _, ...rest } = state.customTargets;
+  state.customTargets = rest;
   persistAndRender();
 }
 
@@ -1510,8 +1605,10 @@ function exportJSON() {
     customPokemon: state.customPokemon,
     history: state.history,
     activeVariants: state.activeVariants,
+    hiddenElite: state.hiddenElite,
+    customTargets: state.customTargets,
     exportedAt: new Date().toISOString(),
-    version: 1,
+    version: 2,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -1540,6 +1637,8 @@ function importJSON() {
       if (data.customPokemon) state.customPokemon = data.customPokemon;
       if (data.history) state.history = data.history;
       if (data.activeVariants) state.activeVariants = data.activeVariants;
+      if (data.hiddenElite) state.hiddenElite = data.hiddenElite;
+      if (data.customTargets) state.customTargets = data.customTargets;
       initEVs();
       persistAndRender();
       showSaveStatus('Importado ✓', 2000);
@@ -1566,7 +1665,8 @@ function render() {
       ${renderHeader()}
       ${renderEliteGrid(allPokemon)}
       ${renderCustomGrid()}
-      ${renderDetail(selectedPokemon, selectedEVs, totalEVs, remaining)}
+      ${renderHiddenElite()}
+      ${selectedPokemon ? renderDetail(selectedPokemon, selectedEVs, totalEVs, remaining) : ''}
       ${renderTips()}
     </div>
     ${state.showAddModal ? renderAddModal() : ''}
@@ -1600,9 +1700,9 @@ function renderHeader() {
           <button class="btn btn-indigo" data-action="history">
             <span>📜</span><span>Histórico${state.history.length > 0 ? ` (${state.history.length})` : ''}</span>
           </button>
-          <div style="text-align:right;margin-left:8px">
+          <div style="text-align:right;margin-left:8px;min-width:140px">
             <div style="font-size:10px;color:var(--text-dim);letter-spacing:0.2em;text-transform:uppercase">Status</div>
-            <div class="status" id="status-indicator">${state.saveStatus || '\u00A0'}</div>
+            <div class="status" id="status-indicator" style="min-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${state.saveStatus || '\u00A0'}</div>
           </div>
         </div>
       </div>
@@ -1638,12 +1738,38 @@ function renderPokemonCard(p, accentColor) {
 }
 
 function renderEliteGrid(allPokemon) {
-  const resolved = ELITE_TEAM.map(resolvePokemon);
+  const resolved = ELITE_TEAM.filter((p) => !state.hiddenElite[p.id]).map(resolvePokemon);
   return `
     <div style="margin-bottom:16px">
       <div class="section-label" style="color:rgba(251, 191, 36, 0.8)">★ Elite Team</div>
+      ${resolved.length === 0
+        ? '<div class="extras-empty">Escondeste todos os membros da Elite Team. Vê a secção "Pokémon escondidos" em baixo para recuperares algum.</div>'
+        : `<div class="grid grid-pokemon">${resolved.map((p) => renderPokemonCard(p, '#fbbf24')).join('')}</div>`
+      }
+    </div>
+  `;
+}
+
+function renderHiddenElite() {
+  const hidden = ELITE_TEAM.filter((p) => state.hiddenElite[p.id]).map(resolvePokemon);
+  if (hidden.length === 0) return '';
+  return `
+    <div style="margin-bottom:20px">
+      <div class="section-label" style="color:rgba(148, 163, 184, 0.7)">👁 Pokémon escondidos (${hidden.length})</div>
       <div class="grid grid-pokemon">
-        ${resolved.map((p) => renderPokemonCard(p, '#fbbf24')).join('')}
+        ${hidden.map((p) => {
+          const pTotal = Object.values(state.evs[p.id] || emptyEVs()).reduce((a, b) => a + b, 0);
+          return `
+            <button class="p-card" data-action="restore-elite" data-id="${p.id}" style="opacity:0.5;border-style:dashed">
+              <div class="p-card-sprite">${p.sprite}</div>
+              <div class="p-card-name">${p.name}</div>
+              <div class="p-card-bar">
+                <div class="p-card-bar-fill" style="width:${(pTotal / MAX_TOTAL) * 100}%;background:${p.color}"></div>
+              </div>
+              <div class="p-card-total" style="font-size:9px">Toca para recuperar</div>
+            </button>
+          `;
+        }).join('')}
       </div>
     </div>
   `;
@@ -1719,18 +1845,31 @@ function renderDetail(selectedPokemon, selectedEVs, totalEVs, remaining) {
         </div>
       </div>
       ${renderVariantSelector(selectedPokemon)}
+      ${state.editingTargets === selectedPokemon.id ? `
+        <div style="padding:8px 12px;border-radius:6px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.3);margin-bottom:14px;font-size:11px;color:#fcd34d">
+          🎯 <strong>Modo edição de targets ativo</strong> — escreve novos valores nos campos "Target" junto a cada stat. Mete 0 para desativar target numa stat. Clica "Terminar Edição" quando acabares.
+        </div>
+      ` : ''}
       <div class="stats">
         ${STAT_KEYS.map((stat) => renderStatRow(selectedPokemon, selectedEVs, totalEVs, stat)).join('')}
       </div>
       <div class="actions">
-        ${selectedPokemon.recommended ? `
-          <button class="btn btn-primary" data-action="apply-recommended">Aplicar Spread Recomendado</button>
+        ${selectedPokemon.recommended && Object.keys(selectedPokemon.recommended).length > 0 ? `
+          <button class="btn btn-primary" data-action="apply-recommended">Aplicar Spread</button>
+        ` : ''}
+        <button class="btn btn-amber" data-action="toggle-edit-targets">
+          ${state.editingTargets === selectedPokemon.id ? '✓ Terminar Edição' : '🎯 Editar Targets'}
+        </button>
+        ${state.customTargets[selectedPokemon.id] ? `
+          <button class="btn" data-action="reset-targets">Repor Targets</button>
         ` : ''}
         <button class="btn btn-red" data-action="reset">Reset EVs</button>
         ${selectedPokemon.isCustom ? `
-          <button class="btn btn-purple" data-action="edit-custom">Editar</button>
+          <button class="btn btn-purple" data-action="edit-custom">Editar Info</button>
           <button class="btn btn-red" data-action="delete-custom" style="margin-left:auto">Remover</button>
-        ` : ''}
+        ` : `
+          <button class="btn btn-red" data-action="hide-elite" style="margin-left:auto">Esconder da Equipa</button>
+        `}
       </div>
       ${renderMoveset(selectedPokemon)}
     </div>
@@ -1743,12 +1882,26 @@ function renderStatRow(selectedPokemon, selectedEVs, totalEVs, stat) {
   const isMax = val >= MAX_PER_STAT;
   const recommended = (selectedPokemon.recommended && selectedPokemon.recommended[stat.key]) || 0;
   const trainSpot = (selectedPokemon.trainSpots && selectedPokemon.trainSpots[stat.key]) || DEFAULT_SPOTS[stat.key];
+  const isEditingTargets = state.editingTargets === selectedPokemon.id;
+
+  let targetDisplay = '';
+  if (isEditingTargets) {
+    targetDisplay = `
+      <span class="stat-target-edit">
+        <span style="font-size:9px;color:var(--text-dim);margin-right:4px">Target:</span>
+        <input class="stat-target-input" type="number" min="0" max="${MAX_PER_STAT}" value="${recommended}" data-target-stat="${stat.key}" style="width:50px;height:22px;font-size:11px;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.4);color:var(--accent);border-radius:4px;padding:2px 4px;text-align:center;font-family:inherit;font-weight:bold">
+      </span>
+    `;
+  } else if (recommended > 0) {
+    targetDisplay = `<span class="stat-target">Target ${recommended}</span>`;
+  }
+
   return `
     <div class="stat-row">
       <div class="stat-row-header">
         <div class="stat-label">
           <span>${stat.label}</span>
-          ${recommended > 0 ? `<span class="stat-target">Target ${recommended}</span>` : ''}
+          ${targetDisplay}
         </div>
         <div class="stat-controls">
           <button class="stat-btn minus" data-action="dec" data-stat="${stat.key}" ${val <= 0 ? 'disabled' : ''}>−</button>
@@ -1987,6 +2140,14 @@ function attachListeners() {
       return;
     }
     if (action === 'delete-custom') { deletePokemon(state.selected); return; }
+    if (action === 'hide-elite') { hideElite(state.selected); return; }
+    if (action === 'restore-elite') { restoreElite(id); return; }
+    if (action === 'toggle-edit-targets') {
+      if (state.editingTargets === state.selected) stopEditingTargets();
+      else startEditingTargets(state.selected);
+      return;
+    }
+    if (action === 'reset-targets') { resetTargetsToDefault(state.selected); return; }
     if (action === 'inc') { updateEV(state.selected, t.dataset.stat, 1); return; }
     if (action === 'dec') { updateEV(state.selected, t.dataset.stat, -1); return; }
     if (action === 'swap-variant') { swapVariant(state.selected, t.dataset.variant); return; }
@@ -2086,6 +2247,14 @@ function attachListeners() {
   // Stat number inputs
   document.querySelectorAll('.stat-input').forEach((inp) => {
     inp.onchange = (e) => { setEV(state.selected, inp.dataset.stat, e.target.value); };
+  });
+
+  // Target edit inputs — save on change without re-rendering during typing
+  document.querySelectorAll('.stat-target-input').forEach((inp) => {
+    inp.onchange = (e) => {
+      setTarget(state.selected, inp.dataset.targetStat, e.target.value);
+      render(); // re-render to update target markers on bar
+    };
   });
 }
 
