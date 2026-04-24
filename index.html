@@ -1991,8 +1991,13 @@ function attachListeners() {
     if (action === 'dec') { updateEV(state.selected, t.dataset.stat, -1); return; }
     if (action === 'swap-variant') { swapVariant(state.selected, t.dataset.variant); return; }
     if (action === 'close-modal') {
-      // only close if clicking backdrop or explicit close btn
-      if (t.classList.contains('modal-backdrop') || t.classList.contains('modal-close') || t.closest('.btn')) {
+      // Only close if clicking directly on the backdrop itself or the × button
+      if (e.target === t && t.classList.contains('modal-backdrop')) {
+        closeAddModal();
+      } else if (t.classList.contains('modal-close')) {
+        closeAddModal();
+      } else if (t.classList.contains('btn') && !t.classList.contains('btn-primary')) {
+        // the "Cancelar" button (btn without btn-primary)
         closeAddModal();
       }
       return;
@@ -2001,14 +2006,18 @@ function attachListeners() {
     if (action === 'set-color') { state.form = { ...state.form, color: t.dataset.color }; render(); return; }
     if (action === 'save-pokemon') { savePokemon(); return; }
     if (action === 'close-history') {
-      if (t.classList.contains('modal-backdrop') || t.classList.contains('modal-close') || t.closest('.btn')) {
+      if (e.target === t && t.classList.contains('modal-backdrop')) {
+        state.showHistoryModal = false; render();
+      } else if (t.classList.contains('modal-close')) {
         state.showHistoryModal = false; render();
       }
       return;
     }
     if (action === 'clear-history') { clearHistory(); return; }
     if (action === 'close-sync') {
-      if (t.classList.contains('modal-backdrop') || t.classList.contains('modal-close')) {
+      if (e.target === t && t.classList.contains('modal-backdrop')) {
+        state.showSyncModal = false; render();
+      } else if (t.classList.contains('modal-close')) {
         state.showSyncModal = false; render();
       }
       return;
