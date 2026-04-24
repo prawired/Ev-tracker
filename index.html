@@ -1284,6 +1284,8 @@ function setSyncStatus(msg, type) {
     state.syncStatus = '';
     renderSyncStatus();
   }, 4000);
+  // Also surface in main status bar so user sees it even if sync modal is closed
+  setStatus(msg, 4000);
 }
 
 function renderSyncStatus() {
@@ -1895,6 +1897,9 @@ function renderHistoryModal() {
 }
 
 function renderSyncModal() {
+  const hasGist = !!state.syncGistId;
+  const hasToken = !!state.syncToken;
+  const configured = hasGist && hasToken;
   return `
     <div class="modal-backdrop" data-action="close-sync">
       <div class="modal" style="--modal-border:rgba(168, 85, 247, 0.4);--modal-title-color:#d8b4fe" data-stop-propagation>
@@ -1902,6 +1907,11 @@ function renderSyncModal() {
           <div class="modal-title">☁ Sync entre Dispositivos</div>
           <button class="modal-close" data-action="close-sync">×</button>
         </div>
+        ${configured ? `
+          <div style="padding:8px 12px;border-radius:6px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);margin-bottom:14px;font-size:11px;color:#6ee7b7">
+            ✓ Credenciais configuradas · Gist ID: <code style="color:#fcd34d">${escapeHtml(state.syncGistId).slice(0,12)}…</code> · Token guardado
+          </div>
+        ` : ''}
         <div class="sync-help">
           A sincronização usa um <strong>GitHub Gist privado</strong> como "base de dados" entre os teus dispositivos. Setup:
         </div>
@@ -1913,11 +1923,11 @@ function renderSyncModal() {
         </ol>
 
         <div class="form-group" style="margin-top:16px">
-          <label class="form-label">Gist ID</label>
+          <label class="form-label">Gist ID ${hasGist ? '<span style="color:#6ee7b7">✓ guardado</span>' : ''}</label>
           <input class="form-input" type="text" id="sync-gist-id" value="${escapeHtml(state.syncGistId)}" placeholder="Exemplo: a1b2c3d4e5...">
         </div>
         <div class="form-group">
-          <label class="form-label">Token GitHub (apenas gist)</label>
+          <label class="form-label">Token GitHub ${hasToken ? '<span style="color:#6ee7b7">✓ guardado</span>' : '<span style="color:rgba(253,230,138,0.5)">(apenas gist)</span>'}</label>
           <input class="form-input" type="password" id="sync-token" value="${escapeHtml(state.syncToken)}" placeholder="ghp_...">
         </div>
 
@@ -1956,7 +1966,7 @@ function escapeHtml(s) {
 // ============================================================
 function attachListeners() {
   const app = document.getElementById('app');
-  app.onclick = (e) => {
+  const handleAction = (e) => {
     const t = e.target.closest('[data-action]');
     if (!t) return;
     const action = t.dataset.action;
@@ -2004,34 +2014,55 @@ function attachListeners() {
       return;
     }
     if (action === 'sync-save') {
-      const gistId = document.getElementById('sync-gist-id').value.trim();
-      const token = document.getElementById('sync-token').value.trim();
+      const gistIdEl = document.getElementById('sync-gist-id');
+      const tokenEl = document.getElementById('sync-token');
+      if (!gistIdEl || !tokenEl) {
+        alert('Erro: campos não encontrados. Fecha e reabre o modal.');
+        return;
+      }
+      const gistId = gistIdEl.value.trim();
+      const token = tokenEl.value.trim();
+      if (!gistId && !token) {
+        setSyncStatus('Preenche Gist ID e/ou token', 'err');
+        return;
+      }
       state.syncGistId = gistId;
       state.syncToken = token;
-      saveToStorage();
-      setSyncStatus('Credenciais guardadas ✓', 'ok');
+      const ok = saveToStorage();
+      if (ok) {
+        setSyncStatus(`Guardado ✓ (Gist: ${gistId ? gistId.slice(0,8)+'…' : 'vazio'}, Token: ${token ? 'definido' : 'vazio'})`, 'ok');
+        render(); // re-render so the green checkmarks appear
+      } else {
+        setSyncStatus('Falhou a guardar no localStorage', 'err');
+      }
       return;
     }
     if (action === 'sync-upload') {
-      state.syncGistId = document.getElementById('sync-gist-id').value.trim();
-      state.syncToken = document.getElementById('sync-token').value.trim();
+      const gistIdEl = document.getElementById('sync-gist-id');
+      const tokenEl = document.getElementById('sync-token');
+      if (gistIdEl) state.syncGistId = gistIdEl.value.trim();
+      if (tokenEl) state.syncToken = tokenEl.value.trim();
       saveToStorage();
       syncToGist();
       return;
     }
     if (action === 'sync-download') {
-      state.syncGistId = document.getElementById('sync-gist-id').value.trim();
-      state.syncToken = document.getElementById('sync-token').value.trim();
+      const gistIdEl = document.getElementById('sync-gist-id');
+      const tokenEl = document.getElementById('sync-token');
+      if (gistIdEl) state.syncGistId = gistIdEl.value.trim();
+      if (tokenEl) state.syncToken = tokenEl.value.trim();
       saveToStorage();
       syncFromGist();
       return;
     }
   };
 
-  // Prevent backdrop click from triggering when clicking inside the modal
-  document.querySelectorAll('[data-stop-propagation]').forEach((el) => {
-    el.onclick = (e) => e.stopPropagation();
-  });
+  // Attach at document level so modal clicks always work, regardless of structure
+  app.onclick = handleAction;
+  document.onclick = (e) => {
+    // Handle clicks outside #app (like modal backdrops rendered directly in body)
+    if (!app.contains(e.target)) return;
+  };
 
   // Form inputs
   const formName = document.getElementById('form-name');
