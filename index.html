@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -7,8 +7,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="EV Tracker">
 <meta name="theme-color" content="#0f3460">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%230f3460'/%3E%3Ctext x='50%25' y='55%25' font-size='110' text-anchor='middle' fill='%23fbbf24' font-weight='900' font-family='Arial Black'%3EEV%3C/text%3E%3C/svg%3E">
-<title>EV Tracker · FireRed</title>
+<link rel="apple-torch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%230f3460'/%3E%3Ctext x='50%25' y='55%25' font-size='110' text-anchor='middle' fill='%23fbbf24' font-weight='900' font-family='Arial Black'%3EEV%3C/text%3E%3C/svg%3E">
+<title>EV Tracker · Gen 3</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
@@ -450,7 +450,7 @@ body {
   align-items: center;
   justify-content: center;
   line-height: 1;
-  touch-action: manipulation;
+  torch-action: manipulation;
 }
 
 .stat-btn:active:not(:disabled) { transform: scale(0.9); }
@@ -474,14 +474,14 @@ body {
   -moz-appearance: textfield;
 }
 
-.stat-input::-webkit-outer-spin-button,
+.stat-input::-webkit-orter-spin-button,
 .stat-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 .stat-input:focus {
-  outline: none;
+  ortline: none;
   border-color: var(--accent);
 }
 
@@ -512,14 +512,6 @@ body {
   height: 100%;
   background: var(--accent);
   box-shadow: 0 0 4px rgba(251, 191, 36, 0.5);
-}
-
-.stat-train-spot {
-  font-size: 10px;
-  color: var(--text-dim);
-  margin-top: 3px;
-  padding-left: 2px;
-  line-height: 1.4;
 }
 
 .actions {
@@ -667,7 +659,7 @@ body {
   padding: 0 8px;
 }
 
-.form-group {
+.form-grorp {
   margin-bottom: 14px;
 }
 
@@ -693,7 +685,7 @@ body {
 }
 
 .form-input:focus, .form-select:focus {
-  outline: none;
+  ortline: none;
   border-color: var(--purple);
 }
 
@@ -881,7 +873,7 @@ body {
   font-family: ui-monospace, monospace;
 }
 
-.history-time-hour { font-size: 11px; color: var(--text-muted); }
+.history-time-horr { font-size: 11px; color: var(--text-muted); }
 .history-time-date { font-size: 9px; color: var(--text-dim); }
 
 /* SYNC PANEL */
@@ -928,7 +920,7 @@ body {
 
 /* Hide number spinners */
 input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-orter-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -959,18 +951,10 @@ const ELITE_TEAM_FIRERED = [
     recommended: { spAtk: 252, speed: 252, hp: 4 },
     moves: [
       { name: 'Psychic', source: 'TM29 — Saffron Dojo' },
-      { name: 'Ice Beam', source: 'TM13 — Game Corner Celadon' },
-      { name: 'Calm Mind', source: 'TM04 — Game Corner Celadon' },
-      { name: 'Body Slam', source: 'TM08 — Game Corner Celadon' },
+      { name: 'Ice Beam', source: 'TM13 — Game Colorner Celadon' },
+      { name: 'Calm Mind', source: 'TM04 — Game Colorner Celadon' },
+      { name: 'Body Slam', source: 'TM08 — Game Colorner Celadon' },
     ],
-    trainSpots: {
-      hp: 'Chansey (Safari Zone) — 2 EVs/KO',
-      atk: 'Mankey/Primeape (Route 22) — 1 EV/KO',
-      def: 'Geodude (Rock Tunnel) — 1 EV/KO',
-      spAtk: 'Gastly (Pokémon Tower) — 1 EV/KO',
-      spDef: 'Tentacool (qualquer água) — 1 EV/KO',
-      speed: 'Zubat/Diglett (Diglett Cave) — 1 EV/KO',
-    },
   },
   {
     id: 'lapras',
@@ -981,18 +965,10 @@ const ELITE_TEAM_FIRERED = [
     recommended: { hp: 252, spAtk: 252, def: 4 },
     moves: [
       { name: 'Surf', source: 'HM03 — Safari Zone Warden' },
-      { name: 'Ice Beam', source: 'TM13 — Icefall Cave / Game Corner' },
+      { name: 'Ice Beam', source: 'TM13 — Icefall Cave / Game Colorner' },
       { name: 'Thunderbolt', source: 'TM24 — Rocket Hideout Celadon' },
-      { name: 'Body Slam', source: 'TM08 — Game Corner prize' },
+      { name: 'Body Slam', source: 'TM08 — Game Colorner prize' },
     ],
-    trainSpots: {
-      hp: 'Chansey (Safari Zone) — 2 EVs/KO',
-      atk: 'Mankey (Route 22) — 1 EV/KO',
-      def: 'Geodude (Rock Tunnel) — 1 EV/KO',
-      spAtk: 'Gastly (Pokémon Tower) — 1 EV/KO',
-      spDef: 'Tentacool — 1 EV/KO',
-      speed: 'Zubat — 1 EV/KO',
-    },
   },
   {
     id: 'snorlax',
@@ -1002,19 +978,11 @@ const ELITE_TEAM_FIRERED = [
     color: '#4A5568',
     recommended: { hp: 252, atk: 252, spDef: 4 },
     moves: [
-      { name: 'Body Slam', source: 'TM08 — Game Corner Celadon' },
+      { name: 'Body Slam', source: 'TM08 — Game Colorner Celadon' },
       { name: 'Return', source: 'TM27 — Route 12 (amizade alta)' },
       { name: 'Rest', source: 'TM44 — Safari Zone (+ Chesto Berry)' },
-      { name: 'Shadow Ball', source: 'TM30 — Game Corner Celadon' },
+      { name: 'Shadow Ball', source: 'TM30 — Game Colorner Celadon' },
     ],
-    trainSpots: {
-      hp: 'Chansey (Safari Zone) — 2 EVs/KO',
-      atk: 'Mankey/Primeape (Route 22) — 1 EV/KO',
-      def: 'Geodude — 1 EV/KO',
-      spAtk: 'Gastly — 1 EV/KO',
-      spDef: 'Tentacool — 1 EV/KO',
-      speed: 'Zubat (Mt. Moon) — 1 EV/KO',
-    },
   },
   {
     id: 'rhydon',
@@ -1024,19 +992,11 @@ const ELITE_TEAM_FIRERED = [
     color: '#8B6F47',
     recommended: { atk: 252, hp: 252, def: 4 },
     moves: [
-      { name: 'Earthquake', source: 'TM26 — Giovanni Viridian Gym' },
+      { name: 'Earthquake', source: 'TM26 — Giovanni at Viridian Gym' },
       { name: 'Rock Slide', source: 'TM39 — Silph Co. / Rocket Hideout' },
       { name: 'Brick Break', source: 'TM31 — Celadon Dept. Store' },
       { name: 'Double-Edge', source: 'Move tutor — Mt. Ember (Sevii)' },
     ],
-    trainSpots: {
-      hp: 'Chansey (Safari Zone) — 2 EVs/KO',
-      atk: 'Mankey/Primeape — 1 EV/KO',
-      def: 'Geodude/Graveler — 1 EV/KO',
-      spAtk: 'Gastly — 1 EV/KO',
-      spDef: 'Tentacool — 1 EV/KO',
-      speed: 'Zubat — 1 EV/KO',
-    },
   },
   {
     id: 'charizard',
@@ -1048,17 +1008,9 @@ const ELITE_TEAM_FIRERED = [
     moves: [
       { name: 'Fire Blast', source: 'TM38 — Pokémon Mansion (Cinnabar)' },
       { name: 'Brick Break', source: 'TM31 — Celadon Dept. Store' },
-      { name: 'Dragon Claw', source: 'Move tutor — Cape Brink (pós-Sevii)' },
+      { name: 'Dragon Claw', source: 'Move tutor — Cape Brink (post-Sevii)' },
       { name: 'Hidden Power Grass', source: 'TM10 — Route 15 / Meowth Pickup' },
     ],
-    trainSpots: {
-      hp: 'Chansey — 2 EVs/KO',
-      atk: 'Mankey (Route 22) — 1 EV/KO',
-      def: 'Geodude — 1 EV/KO',
-      spAtk: 'Gastly (Pokémon Tower) — 1 EV/KO',
-      spDef: 'Tentacool — 1 EV/KO',
-      speed: 'Zubat/Diglett (Diglett Cave) — 1 EV/KO',
-    },
   },
   {
     id: 'electric_slot',
@@ -1069,18 +1021,10 @@ const ELITE_TEAM_FIRERED = [
     recommended: { spAtk: 252, speed: 252, hp: 4 },
     moves: [
       { name: 'Thunderbolt', source: 'TM24 — Rocket Hideout Celadon' },
-      { name: 'Bite', source: 'Natural (Eevee aprende cedo)' },
-      { name: 'Thunder Wave', source: 'Natural nível 36' },
+      { name: 'Bite', source: 'Natural (Eevee learns it early)' },
+      { name: 'Thunder Wave', source: 'Natural level 36' },
       { name: 'Hidden Power', source: 'TM10 — Route 15 / Meowth Pickup' },
     ],
-    trainSpots: {
-      hp: 'Chansey — 2 EVs/KO',
-      atk: 'Mankey — 1 EV/KO',
-      def: 'Geodude — 1 EV/KO',
-      spAtk: 'Gastly (Pokémon Tower) — 1 EV/KO',
-      spDef: 'Tentacool — 1 EV/KO',
-      speed: 'Zubat/Diglett — 1 EV/KO',
-    },
     variants: [
       {
         name: 'Jolteon',
@@ -1090,11 +1034,11 @@ const ELITE_TEAM_FIRERED = [
         recommended: { spAtk: 252, speed: 252, hp: 4 },
         moves: [
           { name: 'Thunderbolt', source: 'TM24 — Rocket Hideout Celadon' },
-          { name: 'Bite', source: 'Natural (Eevee aprende cedo)' },
-          { name: 'Thunder Wave', source: 'Natural nível 36' },
+          { name: 'Bite', source: 'Natural (Eevee learns it early)' },
+          { name: 'Thunder Wave', source: 'Natural level 36' },
           { name: 'Hidden Power', source: 'TM10 — Route 15 / Meowth Pickup' },
         ],
-        note: 'Special sweeper puro. Speed 130, Sp.Atk 110. Eevee em Celadon Mansion.',
+        note: 'Pure special sweeper. Speed 130, Sp.Atk 110. Eevee in Celadon Mansion.',
       },
       {
         name: 'Raichu',
@@ -1104,11 +1048,11 @@ const ELITE_TEAM_FIRERED = [
         recommended: { speed: 252, atk: 128, spAtk: 128, hp: 4 },
         moves: [
           { name: 'Thunderbolt', source: 'TM24 — Rocket Hideout Celadon' },
-          { name: 'Quick Attack', source: 'Natural nível 11 (Pikachu)' },
-          { name: 'Thunder Wave', source: 'Natural nível 8 (Pikachu)' },
+          { name: 'Quick Attack', source: 'Natural level 11 (Pikachu)' },
+          { name: 'Thunder Wave', source: 'Natural level 8 (Pikachu)' },
           { name: 'Brick Break', source: 'TM31 — Celadon Dept. Store' },
         ],
-        note: 'Mixed attacker. Atk 90 + Sp.Atk 90 aproveita físico. Requer Pikachu Naughty.',
+        note: 'Mixed attacker. Atk 90 + Sp.Atk 90 leverages physical moves. Needs a Naughty Pikachu.',
       },
     ],
   },
@@ -1126,19 +1070,11 @@ const ELITE_TEAM_EMERALD = [
     color: '#4A90E2',
     recommended: { atk: 252, hp: 252, spDef: 4 },
     moves: [
-      { name: 'Surf', source: 'HM03 — Wallace (após Sootopolis)' },
+      { name: 'Surf', source: 'HM03 — Wallace (after Sootopolis)' },
       { name: 'Earthquake', source: 'TM26 — Seafloor Cavern' },
-      { name: 'Ice Beam', source: 'TM13 — Abandoned Ship / Game Corner Mauville' },
+      { name: 'Ice Beam', source: 'TM13 — Abandoned Ship / Game Colorner Mauville' },
       { name: 'Rock Slide', source: 'TM39 — Fiery Path' },
     ],
-    trainSpots: {
-      hp: 'Marill/Azumarill (Petalburg/Route 117) — 2 EVs/KO',
-      atk: 'Machop (Granite Cave) — 1 EV/KO',
-      def: 'Geodude (Granite Cave) — 1 EV/KO',
-      spAtk: 'Oddish/Gloom (Route 110) — 1-2 EVs/KO',
-      spDef: 'Tentacool (água) — 1 EV/KO',
-      speed: 'Zubat (Granite Cave) / Electrike (Route 110) — 1 EV/KO',
-    },
   },
   {
     id: 'em_metagross',
@@ -1148,19 +1084,11 @@ const ELITE_TEAM_EMERALD = [
     color: '#7C3AED',
     recommended: { atk: 252, hp: 252, def: 4 },
     moves: [
-      { name: 'Meteor Mash', source: 'Natural nível 45' },
+      { name: 'Meteor Mash', source: 'Natural level 45' },
       { name: 'Earthquake', source: 'TM26 — Seafloor Cavern' },
       { name: 'Psychic', source: 'TM29 — Victory Road' },
-      { name: 'Shadow Ball', source: 'TM30 — Mt. Pyre (físico em Gen 3!)' },
+      { name: 'Shadow Ball', source: 'TM30 — Mt. Pyre (physical in Gen 3!)' },
     ],
-    trainSpots: {
-      hp: 'Marill/Azumarill — 2 EVs/KO',
-      atk: 'Machop (Granite Cave) — 1 EV/KO',
-      def: 'Geodude — 1 EV/KO',
-      spAtk: 'Oddish — 1 EV/KO',
-      spDef: 'Tentacool — 1 EV/KO',
-      speed: 'Zubat / Electrike — 1 EV/KO',
-    },
   },
   {
     id: 'em_manectric',
@@ -1171,18 +1099,10 @@ const ELITE_TEAM_EMERALD = [
     recommended: { spAtk: 252, speed: 252, hp: 4 },
     moves: [
       { name: 'Thunderbolt', source: 'TM24 — Wattson (Mauville Gym)' },
-      { name: 'Crunch', source: 'Natural nível 47 (especial em Gen 3!)' },
-      { name: 'Thunder Wave', source: 'Natural nível 13' },
-      { name: 'Hidden Power', source: 'TM10 — Fortree (ideal Grass/Ice)' },
+      { name: 'Crunch', source: 'Natural level 47 (special in Gen 3!)' },
+      { name: 'Thunder Wave', source: 'Natural level 13' },
+      { name: 'Hidden Power', source: 'TM10 — Fortree (Grass/Ice ideal)' },
     ],
-    trainSpots: {
-      hp: 'Marill/Azumarill — 2 EVs/KO',
-      atk: 'Machop — 1 EV/KO',
-      def: 'Geodude — 1 EV/KO',
-      spAtk: 'Oddish/Gloom (Route 110) — 1-2 EVs/KO',
-      spDef: 'Tentacool — 1 EV/KO',
-      speed: 'Electrike (Route 110) — 1 EV/KO',
-    },
   },
   {
     id: 'em_flygon',
@@ -1197,14 +1117,6 @@ const ELITE_TEAM_EMERALD = [
       { name: 'Rock Slide', source: 'TM39 — Fiery Path' },
       { name: 'Aerial Ace', source: 'TM40 — Fortree' },
     ],
-    trainSpots: {
-      hp: 'Marill/Azumarill — 2 EVs/KO',
-      atk: 'Machop — 1 EV/KO',
-      def: 'Geodude — 1 EV/KO',
-      spAtk: 'Oddish — 1 EV/KO',
-      spDef: 'Tentacool — 1 EV/KO',
-      speed: 'Zubat / Electrike — 1 EV/KO',
-    },
   },
   {
     id: 'em_walrein',
@@ -1214,19 +1126,11 @@ const ELITE_TEAM_EMERALD = [
     color: '#06B6D4',
     recommended: { spAtk: 252, hp: 252, spDef: 4 },
     moves: [
-      { name: 'Ice Beam', source: 'TM13 — Abandoned Ship / Game Corner' },
+      { name: 'Ice Beam', source: 'TM13 — Abandoned Ship / Game Colorner' },
       { name: 'Surf', source: 'HM03 — Wallace' },
       { name: 'Toxic', source: 'TM06 — Fiery Path' },
-      { name: 'Sheer Cold', source: 'Natural nível 56 (OHKO)' },
+      { name: 'Sheer Cold', source: 'Natural level 56 (OHKO)' },
     ],
-    trainSpots: {
-      hp: 'Marill/Azumarill — 2 EVs/KO',
-      atk: 'Machop — 1 EV/KO',
-      def: 'Geodude — 1 EV/KO',
-      spAtk: 'Oddish/Gloom — 1-2 EVs/KO',
-      spDef: 'Tentacool — 1 EV/KO',
-      speed: 'Zubat — 1 EV/KO',
-    },
   },
   {
     id: 'em_hariyama',
@@ -1236,19 +1140,11 @@ const ELITE_TEAM_EMERALD = [
     color: '#F97316',
     recommended: { atk: 252, hp: 252, spDef: 4 },
     moves: [
-      { name: 'Cross Chop', source: 'Natural Makuhita nível 25' },
+      { name: 'Cross Chop', source: 'Natural Makuhita level 25' },
       { name: 'Brick Break', source: 'TM31 — Sootopolis Mart' },
-      { name: 'Rock Tomb', source: 'TM39... espera, é Rock Slide' },
-      { name: 'Knock Off', source: 'Natural Makuhita nível 22' },
+      { name: 'Rock Tomb', source: 'TM39 — Fiery Path' },
+      { name: 'Knock Off', source: 'Natural Makuhita level 22' },
     ],
-    trainSpots: {
-      hp: 'Marill/Azumarill — 2 EVs/KO',
-      atk: 'Machop (Granite Cave) — 1 EV/KO',
-      def: 'Geodude — 1 EV/KO',
-      spAtk: 'Oddish — 1 EV/KO',
-      spDef: 'Tentacool — 1 EV/KO',
-      speed: 'Zubat / Electrike — 1 EV/KO',
-    },
   },
 ];
 
@@ -1276,28 +1172,6 @@ const GAMES = {
 let ELITE_TEAM = ELITE_TEAM_FIRERED;
 
 // Default training spots, picked per game
-const DEFAULT_SPOTS_FIRERED = {
-  hp: 'Chansey (Safari Zone) — 2 EVs/KO',
-  atk: 'Mankey/Primeape (Route 22) — 1 EV/KO',
-  def: 'Geodude (Rock Tunnel) — 1 EV/KO',
-  spAtk: 'Gastly (Pokémon Tower) — 1 EV/KO',
-  spDef: 'Tentacool (qualquer água) — 1 EV/KO',
-  speed: 'Zubat/Diglett — 1 EV/KO',
-};
-
-const DEFAULT_SPOTS_EMERALD = {
-  hp: 'Marill/Azumarill (Route 117) — 2 EVs/KO',
-  atk: 'Machop (Granite Cave) — 1 EV/KO',
-  def: 'Geodude (Granite Cave) — 1 EV/KO',
-  spAtk: 'Oddish/Gloom (Route 110) — 1-2 EVs/KO',
-  spDef: 'Tentacool (qualquer água) — 1 EV/KO',
-  speed: 'Zubat / Electrike — 1 EV/KO',
-};
-
-function getDefaultSpots() {
-  return state.activeGame === 'emerald' ? DEFAULT_SPOTS_EMERALD : DEFAULT_SPOTS_FIRERED;
-}
-
 function getActiveTeam() {
   return state.activeGame === 'emerald' ? ELITE_TEAM_EMERALD : ELITE_TEAM_FIRERED;
 }
@@ -1334,6 +1208,7 @@ const state = {
       activeVariants: {},
       hiddenElite: {},
       customTargets: {},
+      customElite: {},  // { pokemonId: { name?, nature?, sprite?, color? } } — overrides per slot
       selected: null,
     },
     emerald: {
@@ -1342,6 +1217,7 @@ const state = {
       activeVariants: {},
       hiddenElite: {},
       customTargets: {},
+      customElite: {},
       selected: null,
     },
   },
@@ -1390,6 +1266,11 @@ Object.defineProperty(state, 'hiddenElite', {
 Object.defineProperty(state, 'customTargets', {
   get() { return this.gameData[this.activeGame].customTargets; },
   set(v) { this.gameData[this.activeGame].customTargets = v; },
+  configurable: true,
+});
+Object.defineProperty(state, 'customElite', {
+  get() { return this.gameData[this.activeGame].customElite || {}; },
+  set(v) { this.gameData[this.activeGame].customElite = v; },
   configurable: true,
 });
 Object.defineProperty(state, 'selected', {
@@ -1476,12 +1357,12 @@ function initEVs() {
   for (const gameId of Object.keys(GAMES)) {
     const team = GAMES[gameId].team;
     const gd = state.gameData[gameId];
+    if (!gd.customElite) gd.customElite = {};
     const init = {};
     [...team, ...gd.customPokemon].forEach((p) => {
       init[p.id] = gd.evs[p.id] || emptyEVs();
     });
     gd.evs = init;
-    // Make sure selected is valid for this game
     if (!gd.selected) {
       const visible = team.filter((p) => !gd.hiddenElite[p.id]);
       gd.selected = (visible[0] || team[0])?.id || null;
@@ -1494,16 +1375,16 @@ function initEVs() {
 // ============================================================
 async function syncToGist() {
   if (!state.syncToken || !state.syncGistId) {
-    setSyncStatus('Falta token ou Gist ID', 'err');
+    setSyncStatus('Missing token or Gist ID', 'err');
     return;
   }
   if (state.isUploading) {
     // Another upload is in flight; skip this one (the latest state will
-    // be picked up by the next debounced run if anything changed)
+    // be picked up by the next debornced run if anything changed)
     return;
   }
   state.isUploading = true;
-  setSyncStatus('A sincronizar...', '');
+  setSyncStatus('Syncing...', '');
   try {
     const payload = {
       version: 2,
@@ -1525,9 +1406,9 @@ async function syncToGist() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     state.lastPulledGistTimestamp = payload.lastModified;
     saveToStorage({ fromRemote: true });
-    setSyncStatus('Enviado para Gist ✓', 'ok');
+    setSyncStatus('Uploaded to Gist ✓', 'ok');
   } catch (e) {
-    setSyncStatus(`Erro: ${e.message}`, 'err');
+    setSyncStatus(`Error: ${e.message}`, 'err');
   } finally {
     state.isUploading = false;
   }
@@ -1535,10 +1416,10 @@ async function syncToGist() {
 
 async function syncFromGist(opts = {}) {
   if (!state.syncGistId) {
-    if (!opts.silent) setSyncStatus('Falta Gist ID', 'err');
+    if (!opts.silent) setSyncStatus('Missing Gist ID', 'err');
     return { status: 'no-credentials' };
   }
-  if (!opts.silent) setSyncStatus('A carregar...', '');
+  if (!opts.silent) setSyncStatus('Loading...', '');
   try {
     const headers = { 'Accept': 'application/vnd.github+json' };
     if (state.syncToken) headers['Authorization'] = `token ${state.syncToken}`;
@@ -1546,19 +1427,19 @@ async function syncFromGist(opts = {}) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const gist = await res.json();
     const file = gist.files && gist.files['ev-tracker-data.json'];
-    if (!file) throw new Error('Ficheiro ev-tracker-data.json não encontrado no Gist');
+    if (!file) throw new Error('File ev-tracker-data.json not fornd in Gist');
     const data = JSON.parse(file.content);
     const remoteTs = typeof data.lastModified === 'number' ? data.lastModified : 0;
 
     // Conflict check: if local has unsynced newer changes, skip auto-pull
     if (opts.skipIfLocalNewer && state.lastLocalModified > remoteTs && state.lastLocalModified > state.lastPulledGistTimestamp) {
-      if (!opts.silent) setSyncStatus('Mudanças locais mais recentes — não sincronizado', 'err');
+      if (!opts.silent) setSyncStatus('Local changes are newer — not synced', 'err');
       return { status: 'local-newer', localTs: state.lastLocalModified, remoteTs };
     }
 
     // Same version we already have — nothing to do
     if (opts.skipIfSame && remoteTs > 0 && remoteTs === state.lastPulledGistTimestamp) {
-      if (!opts.silent) setSyncStatus('Já estás atualizado ✓', 'ok');
+      if (!opts.silent) setSyncStatus('Already up to date ✓', 'ok');
       return { status: 'same', remoteTs };
     }
 
@@ -1583,10 +1464,10 @@ async function syncFromGist(opts = {}) {
     initEVs();
     saveToStorage({ fromRemote: true });
     render();
-    if (!opts.silent) setSyncStatus('Carregado do Gist ✓', 'ok');
+    if (!opts.silent) setSyncStatus('Loaded from Gist ✓', 'ok');
     return { status: 'updated', remoteTs };
   } catch (e) {
-    if (!opts.silent) setSyncStatus(`Erro: ${e.message}`, 'err');
+    if (!opts.silent) setSyncStatus(`Error: ${e.message}`, 'err');
     return { status: 'error', error: e.message };
   }
 }
@@ -1625,15 +1506,15 @@ async function autoPullIfNewer() {
   lastAutoPullAt = now;
   const result = await syncFromGist({ silent: true, skipIfLocalNewer: true, skipIfSame: true });
   if (result.status === 'updated') {
-    setStatus('Dados atualizados do Gist ✓', 3000);
+    setStatus('Data updated from Gist ✓', 3000);
   }
 }
 
 function setSyncStatus(msg, type) {
   state.syncStatus = { msg, type };
   renderSyncStatus();
-  clearTimeout(syncStatusTimer);
-  syncStatusTimer = setTimeout(() => {
+  clearTimeort(syncStatusTimer);
+  syncStatusTimer = setTimeort(() => {
     state.syncStatus = '';
     renderSyncStatus();
   }, 4000);
@@ -1655,9 +1536,9 @@ function renderSyncStatus() {
 
 function scheduleAutoSync() {
   if (!state.syncGistId || !state.syncToken) return;
-  clearTimeout(autoSyncTimer);
+  clearTimeort(autoSyncTimer);
   state.pendingUpload = true;
-  autoSyncTimer = setTimeout(async () => {
+  autoSyncTimer = setTimeort(async () => {
     await syncToGist();
     state.pendingUpload = false;
   }, 3000);
@@ -1666,7 +1547,7 @@ function scheduleAutoSync() {
 // Force any pending upload to complete immediately
 async function flushPendingUpload() {
   if (!state.pendingUpload) return;
-  clearTimeout(autoSyncTimer);
+  clearTimeort(autoSyncTimer);
   await syncToGist();
   state.pendingUpload = false;
 }
@@ -1685,10 +1566,20 @@ function resolvePokemon(base) {
       }
     }
   }
+  // Apply custom elite override (name/nature/sprite/color edits per slot)
+  const eliteOverride = state.customElite[base.id];
+  if (eliteOverride) {
+    resolved = {
+      ...resolved,
+      name: eliteOverride.name || resolved.name,
+      nature: eliteOverride.nature || resolved.nature,
+      sprite: eliteOverride.sprite || resolved.sprite,
+      color: eliteOverride.color || resolved.color,
+    };
+  }
   // Apply custom targets override if any
   const custom = state.customTargets[base.id];
   if (custom) {
-    // Only keep keys with value > 0 so the "target markers" still work as expected
     const filtered = {};
     for (const k of Object.keys(custom)) {
       const v = custom[k];
@@ -1729,9 +1620,9 @@ function setStatus(msg, duration) {
   state.saveStatus = msg;
   const el = document.getElementById('status-indicator');
   if (el) el.textContent = msg || '\u00A0';
-  clearTimeout(saveStatusTimer);
+  clearTimeort(saveStatusTimer);
   if (duration > 0) {
-    saveStatusTimer = setTimeout(() => {
+    saveStatusTimer = setTimeort(() => {
       state.saveStatus = '';
       const el2 = document.getElementById('status-indicator');
       if (el2) el2.textContent = '\u00A0';
@@ -1762,8 +1653,8 @@ function logAction(actionType, pokemonId, details, prevEvs) {
 // ACTIONS
 // ============================================================
 function persistAndRender() {
-  if (saveToStorage()) showSaveStatus('Guardado ✓');
-  else showSaveStatus('Erro ao guardar', 2500);
+  if (saveToStorage()) showSaveStatus('Saved ✓');
+  else showSaveStatus('Save error', 2500);
   scheduleAutoSync();
   render();
 }
@@ -1808,7 +1699,7 @@ function resetPokemon(pokemonId) {
   const total = Object.values(state.evs[pokemonId]).reduce((a, b) => a + b, 0);
   if (total === 0) return;
   const prevEvs = { ...state.evs, [pokemonId]: { ...state.evs[pokemonId] } };
-  logAction('reset', pokemonId, `Reset EVs (eram ${total} no total)`, prevEvs);
+  logAction('reset', pokemonId, `Reset EVs (eram ${total} total)`, prevEvs);
   state.evs = { ...state.evs, [pokemonId]: emptyEVs() };
   persistAndRender();
 }
@@ -1818,7 +1709,7 @@ function applyRecommended(pokemonId) {
   if (!p || !p.recommended) return;
   const newEvs = { ...emptyEVs(), ...p.recommended };
   const prevEvs = { ...state.evs, [pokemonId]: { ...state.evs[pokemonId] } };
-  logAction('applyRecommended', pokemonId, `Spread recomendado aplicado`, prevEvs);
+  logAction('applyRecommended', pokemonId, `Recommended spread applied`, prevEvs);
   state.evs = { ...state.evs, [pokemonId]: newEvs };
   persistAndRender();
 }
@@ -1828,20 +1719,20 @@ function undoLastAction() {
   const last = state.history[0];
   state.evs = { ...state.evs, [last.pokemonId]: { ...last.prevEvsSnapshot } };
   state.history = state.history.slice(1);
-  if (saveToStorage()) showSaveStatus('Revertido ↺');
+  if (saveToStorage()) showSaveStatus('Reverted ↺');
   scheduleAutoSync();
   render();
 }
 
 function clearHistory() {
-  if (!confirm('Limpar todo o histórico? Isto não afeta os EVs atuais.')) return;
+  if (!confirm('Clear all history? This will not affect current EVs.')) return;
   state.history = [];
   persistAndRender();
 }
 
 function swapVariant(slotId, variantName) {
   state.activeVariants = { ...state.activeVariants, [slotId]: variantName };
-  if (saveToStorage()) showSaveStatus('Variante trocada ✓');
+  if (saveToStorage()) showSaveStatus('Variant switched ✓');
   scheduleAutoSync();
   render();
 }
@@ -1868,11 +1759,31 @@ function closeAddModal() {
 function savePokemon() {
   if (!state.form.name.trim()) return;
   if (state.editingId) {
-    state.customPokemon = state.customPokemon.map((p) =>
-      p.id === state.editingId
-        ? { ...p, name: state.form.name.trim(), nature: state.form.nature, sprite: state.form.sprite, color: state.form.color }
-        : p
-    );
+    // Check if editing an elite team member (override) or a custom one
+    const baseElite = getActiveTeam().find((p) => p.id === state.editingId);
+    if (baseElite) {
+      // Elite override — only store fields that differ from the base, so resets work cleanly
+      const override = {};
+      const trimmedName = state.form.name.trim();
+      if (trimmedName !== baseElite.name) override.name = trimmedName;
+      if (state.form.nature !== baseElite.nature) override.nature = state.form.nature;
+      if (state.form.sprite !== baseElite.sprite) override.sprite = state.form.sprite;
+      if (state.form.color !== baseElite.color) override.color = state.form.color;
+      const newOverrides = { ...state.customElite };
+      if (Object.keys(override).length === 0) {
+        delete newOverrides[state.editingId];
+      } else {
+        newOverrides[state.editingId] = override;
+      }
+      state.customElite = newOverrides;
+    } else {
+      // Custom pokemon — just edit its fields
+      state.customPokemon = state.customPokemon.map((p) =>
+        p.id === state.editingId
+          ? { ...p, name: state.form.name.trim(), nature: state.form.nature, sprite: state.form.sprite, color: state.form.color }
+          : p
+      );
+    }
   } else {
     const newPokemon = {
       id: `custom_${Date.now()}`,
@@ -1881,7 +1792,6 @@ function savePokemon() {
       sprite: state.form.sprite,
       color: state.form.color,
       isCustom: true,
-      trainSpots: getDefaultSpots(),
     };
     state.customPokemon = [...state.customPokemon, newPokemon];
     state.evs = { ...state.evs, [newPokemon.id]: emptyEVs() };
@@ -1903,13 +1813,13 @@ function switchGame(gameId) {
   // editingTargets is per-pokemon, reset on game change to avoid stale state
   state.editingTargets = null;
   initEVs();
-  if (saveToStorage()) showSaveStatus(`Jogo: ${GAMES[gameId].label} ${GAMES[gameId].sprite}`);
+  if (saveToStorage()) showSaveStatus(`Game: ${GAMES[gameId].label} ${GAMES[gameId].sprite}`);
   scheduleAutoSync();
   render();
 }
 
 function deletePokemon(pokemonId) {
-  if (!confirm('Remover este Pokémon e os seus EVs?')) return;
+  if (!confirm('Remove este Pokémon e os seus EVs?')) return;
   state.customPokemon = state.customPokemon.filter((p) => p.id !== pokemonId);
   const { [pokemonId]: _, ...rest } = state.evs;
   state.evs = rest;
@@ -1923,7 +1833,7 @@ function deletePokemon(pokemonId) {
 }
 
 function hideElite(pokemonId) {
-  if (!confirm('Esconder este Pokémon da Elite Team? Os EVs ficam guardados se quiseres recuperar depois.')) return;
+  if (!confirm('Hide this Pokémon from the Elite Team? EVs are kept in case yor want to restore it later.')) return;
   state.hiddenElite = { ...state.hiddenElite, [pokemonId]: true };
   if (state.selected === pokemonId) {
     const firstVisible = getAllPokemon()[0];
@@ -1961,7 +1871,7 @@ function setTarget(pokemonId, stat, value) {
 }
 
 function resetTargetsToDefault(pokemonId) {
-  if (!confirm('Repor targets originais? Os teus valores personalizados serão apagados.')) return;
+  if (!confirm('Reset to default targets? Your custom values will be erased.')) return;
   const { [pokemonId]: _, ...rest } = state.customTargets;
   state.customTargets = rest;
   persistAndRender();
@@ -1987,7 +1897,7 @@ function exportJSON() {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showSaveStatus('Exportado ✓');
+  showSaveStatus('Exported ✓');
 }
 
 function importJSON() {
@@ -2000,7 +1910,7 @@ function importJSON() {
     try {
       const text = await file.text();
       const data = JSON.parse(text);
-      if (!confirm('Importar este ficheiro substitui os teus dados atuais. Continuar?')) return;
+      if (!confirm('Importing this file will replace your current data. Continue?')) return;
       if (data.gameData) {
         if (data.gameData.firered) Object.assign(state.gameData.firered, data.gameData.firered);
         if (data.gameData.emerald) Object.assign(state.gameData.emerald, data.gameData.emerald);
@@ -2018,9 +1928,9 @@ function importJSON() {
       if (data.history) state.history = data.history;
       initEVs();
       persistAndRender();
-      showSaveStatus('Importado ✓', 2000);
+      showSaveStatus('Imported ✓', 2000);
     } catch (err) {
-      showSaveStatus('Erro ao importar', 3000);
+      showSaveStatus('Import failed', 3000);
     }
   };
   input.click();
@@ -2097,7 +2007,7 @@ function renderHeader() {
             <span>↺</span><span>Undo</span>
           </button>
           <button class="btn btn-indigo" data-action="history">
-            <span>📜</span><span>Histórico${state.history.length > 0 ? ` (${state.history.length})` : ''}</span>
+            <span>📜</span><span>History${state.history.length > 0 ? ` (${state.history.length})` : ''}</span>
           </button>
           <div style="text-align:right;margin-left:8px;min-width:140px">
             <div style="font-size:10px;color:var(--text-dim);letter-spacing:0.2em;text-transform:uppercase">Status</div>
@@ -2144,7 +2054,7 @@ function renderEliteGrid(allPokemon) {
     <div style="margin-bottom:16px">
       <div class="section-label" style="color:rgba(251, 191, 36, 0.8)">★ Elite Team — ${game.label}</div>
       ${resolved.length === 0
-        ? '<div class="extras-empty">Escondeste todos os membros da Elite Team. Vê a secção "Pokémon escondidos" em baixo para recuperares algum.</div>'
+        ? '<div class="extras-empty">Yor hid all Elite Team members. See "Hidden Pokémon" below to restore one.</div>'
         : `<div class="grid grid-pokemon">${resolved.map((p) => renderPokemonCard(p, '#fbbf24')).join('')}</div>`
       }
     </div>
@@ -2156,7 +2066,7 @@ function renderHiddenElite() {
   if (hidden.length === 0) return '';
   return `
     <div style="margin-bottom:20px">
-      <div class="section-label" style="color:rgba(148, 163, 184, 0.7)">👁 Pokémon escondidos (${hidden.length})</div>
+      <div class="section-label" style="color:rgba(148, 163, 184, 0.7)">👁 Hidden Pokémon (${hidden.length})</div>
       <div class="grid grid-pokemon">
         ${hidden.map((p) => {
           const pTotal = Object.values(state.evs[p.id] || emptyEVs()).reduce((a, b) => a + b, 0);
@@ -2167,7 +2077,7 @@ function renderHiddenElite() {
               <div class="p-card-bar">
                 <div class="p-card-bar-fill" style="width:${(pTotal / MAX_TOTAL) * 100}%;background:${p.color}"></div>
               </div>
-              <div class="p-card-total" style="font-size:9px">Toca para recuperar</div>
+              <div class="p-card-total" style="font-size:9px">Tap to restore</div>
             </button>
           `;
         }).join('')}
@@ -2181,10 +2091,10 @@ function renderCustomGrid() {
     <div style="margin-bottom:20px">
       <div class="section-label" style="color:rgba(216, 180, 254, 0.8)">
         <span>✦ Extra Pokémon${state.customPokemon.length > 0 ? ` (${state.customPokemon.length})` : ''}</span>
-        <button class="btn btn-purple" data-action="add">+ Adicionar</button>
+        <button class="btn btn-purple" data-action="add">+ Add</button>
       </div>
       ${state.customPokemon.length === 0
-        ? '<div class="extras-empty">Sem Pokémon extra adicionados. Usa "+ Adicionar" para incluir outros que queiras treinar.</div>'
+        ? '<div class="extras-empty">No extra Pokémon added yet. Use "+ Add" to include others yor want to train.</div>'
         : `<div class="grid grid-pokemon">${state.customPokemon.map((p) => renderPokemonCard(p, '#a855f7')).join('')}</div>`
       }
     </div>
@@ -2199,7 +2109,7 @@ function renderVariantSelector(selectedPokemon) {
 
   return `
     <div class="variant-selector">
-      <div class="variant-label"><span>🔄</span> Variante do Slot</div>
+      <div class="variant-label"><span>🔄</span> Slot Variant</div>
       <div class="variant-options">
         ${base.variants.map((v) => {
           const active = v.name === currentName;
@@ -2214,7 +2124,7 @@ function renderVariantSelector(selectedPokemon) {
       </div>
       ${currentVariant && currentVariant.note ? `<div class="variant-note">${currentVariant.note}</div>` : ''}
       <div style="font-size:10px;color:var(--text-dim);margin-top:6px;line-height:1.4">
-        Trocar de variante não afeta os EVs atribuídos — só muda natureza, ícone, target e moveset.
+        Switching variant doesn't affect assigned EVs — only changes nature, icon, target, and moveset.
       </div>
     </div>
   `;
@@ -2241,14 +2151,14 @@ function renderDetail(selectedPokemon, selectedEVs, totalEVs, remaining) {
             ${totalEVs}<span class="detail-total-slash">/${MAX_TOTAL}</span>
           </div>
           <div class="detail-total-remaining">
-            ${remaining > 0 ? `${remaining} restantes` : 'MÁXIMO ATINGIDO'}
+            ${remaining > 0 ? `${remaining} remaining` : 'MAX REACHED'}
           </div>
         </div>
       </div>
       ${renderVariantSelector(selectedPokemon)}
       ${state.editingTargets === selectedPokemon.id ? `
         <div style="padding:8px 12px;border-radius:6px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.3);margin-bottom:14px;font-size:11px;color:#fcd34d">
-          🎯 <strong>Modo edição de targets ativo</strong> — escreve novos valores nos campos "Target" junto a cada stat. Mete 0 para desativar target numa stat. Clica "Terminar Edição" quando acabares.
+          🎯 <strong>Target edit mode active</strong>  — type new values in the "Target" fields next to each stat. Set 0 to disable target on a stat. Click "Done editing" when finished.
         </div>
       ` : ''}
       <div class="stats">
@@ -2256,20 +2166,23 @@ function renderDetail(selectedPokemon, selectedEVs, totalEVs, remaining) {
       </div>
       <div class="actions">
         ${selectedPokemon.recommended && Object.keys(selectedPokemon.recommended).length > 0 ? `
-          <button class="btn btn-primary" data-action="apply-recommended">Aplicar Spread</button>
+          <button class="btn btn-primary" data-action="apply-recommended">Apply Spread</button>
         ` : ''}
         <button class="btn btn-amber" data-action="toggle-edit-targets">
-          ${state.editingTargets === selectedPokemon.id ? '✓ Terminar Edição' : '🎯 Editar Targets'}
+          ${state.editingTargets === selectedPokemon.id ? '✓ Done editing' : '🎯 Edit Targets'}
         </button>
         ${state.customTargets[selectedPokemon.id] ? `
-          <button class="btn" data-action="reset-targets">Repor Targets</button>
+          <button class="btn" data-action="reset-targets">Reset Targets</button>
         ` : ''}
         <button class="btn btn-red" data-action="reset">Reset EVs</button>
+        <button class="btn btn-purple" data-action="edit-info">✎ Edit Info</button>
+        ${!selectedPokemon.isCustom && state.customElite[selectedPokemon.id] ? `
+          <button class="btn" data-action="reset-info">Repor Info Original</button>
+        ` : ''}
         ${selectedPokemon.isCustom ? `
-          <button class="btn btn-purple" data-action="edit-custom">Editar Info</button>
-          <button class="btn btn-red" data-action="delete-custom" style="margin-left:auto">Remover</button>
+          <button class="btn btn-red" data-action="delete-custom" style="margin-left:auto">Remove</button>
         ` : `
-          <button class="btn btn-red" data-action="hide-elite" style="margin-left:auto">Esconder da Equipa</button>
+          <button class="btn btn-red" data-action="hide-elite" style="margin-left:auto">Hide from Team</button>
         `}
       </div>
       ${renderMoveset(selectedPokemon)}
@@ -2282,7 +2195,6 @@ function renderStatRow(selectedPokemon, selectedEVs, totalEVs, stat) {
   const pct = (val / MAX_PER_STAT) * 100;
   const isMax = val >= MAX_PER_STAT;
   const recommended = (selectedPokemon.recommended && selectedPokemon.recommended[stat.key]) || 0;
-  const trainSpot = (selectedPokemon.trainSpots && selectedPokemon.trainSpots[stat.key]) || getDefaultSpots()[stat.key];
   const isEditingTargets = state.editingTargets === selectedPokemon.id;
 
   let targetDisplay = '';
@@ -2314,7 +2226,6 @@ function renderStatRow(selectedPokemon, selectedEVs, totalEVs, stat) {
         <div class="stat-bar-fill ${isMax ? 'max' : ''}" style="width:${pct}%;background:linear-gradient(90deg, ${selectedPokemon.color}, ${selectedPokemon.color}dd)"></div>
         ${recommended > 0 ? `<div class="stat-bar-target-marker" style="left:${(recommended / MAX_PER_STAT) * 100}%"></div>` : ''}
       </div>
-      <div class="stat-train-spot">${trainSpot}</div>
     </div>
   `;
 }
@@ -2339,42 +2250,52 @@ function renderMoveset(selectedPokemon) {
 function renderTips() {
   return `
     <div class="tips">
-      <div class="tips-header">Lembretes Gen 3</div>
-      Máx. <strong>252 EVs</strong> por stat, <strong>510 no total</strong>. Cada 4 EVs = 1 ponto de stat ao nível 100.
-      <strong>Vitamins</strong> (HP Up, Protein, etc) dão 10 EVs cada, máximo 100 por stat. Os dados guardam automaticamente
-      no browser deste dispositivo; usa <strong>Export/Import</strong> ou <strong>Sync via Gist</strong> para moveres entre devices.
+      <div class="tips-header">Gen 3 Reminders</div>
+      Max <strong>252 EVs</strong> por stat, <strong>510 total</strong>. Every 4 EVs = 1 stat point at level 100.
+      <strong>Vitamins</strong> (HP Up, Protein, etc) give 10 EVs each, max 100 per stat. Data is saved automatically
+      in this device's browser; use <strong>Export/Import</strong> or <strong>Sync via Gist</strong> to move between devices.
     </div>
   `;
 }
 
 function renderAddModal() {
+  const isEditingElite = state.editingId && getActiveTeam().some((p) => p.id === state.editingId);
+  const isEditing = !!state.editingId;
+  const title = isEditing
+    ? (isEditingElite ? 'Editar Elite Member' : 'Edit Pokémon Custom')
+    : 'New Pokémon';
   return `
     <div class="modal-backdrop" data-action="close-modal">
       <div class="modal" style="--modal-border:rgba(168, 85, 247, 0.4);--modal-title-color:#d8b4fe" data-stop-propagation>
         <div class="modal-header">
-          <div class="modal-title">${state.editingId ? 'Editar Pokémon' : 'Novo Pokémon'}</div>
+          <div class="modal-title">${title}</div>
           <button class="modal-close" data-action="close-modal">×</button>
         </div>
-        <div class="form-group">
-          <label class="form-label">Nome</label>
-          <input class="form-input" type="text" id="form-name" maxlength="20" value="${escapeHtml(state.form.name)}" placeholder="Ex: Snorlax, Pidgeot...">
+        ${isEditingElite ? `
+          <div style="padding:8px 12px;border-radius:6px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.25);margin-bottom:14px;font-size:11px;color:#fcd34d;line-height:1.5">
+            ⚙ Your changes are saved as a <strong>override</strong> for this slot. Original defaults are preserved — you can return to them with "Reset Original Info" on the card.
+          </div>
+        ` : ''}
+        <div class="form-grorp">
+          <label class="form-label">Name</label>
+          <input class="form-input" type="text" id="form-name" maxlength="20" value="${escapeHtml(state.form.name)}" placeholder="e.g. Snorlax, Pidgeot...">
         </div>
-        <div class="form-group">
-          <label class="form-label">Natureza</label>
+        <div class="form-grorp">
+          <label class="form-label">Nature</label>
           <select class="form-select" id="form-nature">
             ${NATURES.map((n) => `<option value="${n}" ${n === state.form.nature ? 'selected' : ''}>${n}</option>`).join('')}
           </select>
         </div>
-        <div class="form-group">
-          <label class="form-label">Ícone</label>
+        <div class="form-grorp">
+          <label class="form-label">Icon</label>
           <div class="form-grid-icons">
             ${SPRITE_OPTIONS.map((s) => `
               <button class="icon-btn ${s === state.form.sprite ? 'selected' : ''}" data-action="set-sprite" data-sprite="${s}">${s}</button>
             `).join('')}
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Cor</label>
+        <div class="form-grorp">
+          <label class="form-label">Color</label>
           <div class="form-grid-colors">
             ${COLOR_OPTIONS.map((c) => `
               <button class="color-btn ${c === state.form.color ? 'selected' : ''}" data-action="set-color" data-color="${c}" style="background:${c}"></button>
@@ -2385,14 +2306,14 @@ function renderAddModal() {
           <div class="preview-label">Preview</div>
           <div class="preview-sprite">${state.form.sprite}</div>
           <div>
-            <div class="preview-info-name">${escapeHtml(state.form.name) || 'Sem nome'}</div>
+            <div class="preview-info-name">${escapeHtml(state.form.name) || 'No name'}</div>
             <div class="preview-info-nature">Nat. ${state.form.nature}</div>
           </div>
         </div>
         <div class="modal-actions">
-          <button class="btn" data-action="close-modal">Cancelar</button>
+          <button class="btn" data-action="close-modal">Cancel</button>
           <button class="btn btn-primary" data-action="save-pokemon" ${!state.form.name.trim() ? 'disabled' : ''}>
-            ${state.editingId ? 'Guardar' : 'Adicionar'}
+            ${state.editingId ? 'Save' : 'Add'}
           </button>
         </div>
       </div>
@@ -2405,26 +2326,26 @@ function renderHistoryModal() {
     <div class="modal-backdrop" data-action="close-history">
       <div class="modal" style="--modal-border:rgba(99, 102, 241, 0.4);--modal-title-color:#a5b4fc;max-width:680px" data-stop-propagation>
         <div class="modal-header">
-          <div class="modal-title">📜 Histórico de EVs</div>
+          <div class="modal-title">📜 History de EVs</div>
           <button class="modal-close" data-action="close-history">×</button>
         </div>
         ${state.history.length === 0 ? `
           <div class="history-empty">
             <div class="history-empty-icon">⌛</div>
-            <div>Sem alterações registadas ainda.</div>
-            <div style="font-size:10px;margin-top:4px">Começa a ajustar EVs para criar histórico.</div>
+            <div>No changes recorded yet.</div>
+            <div style="font-size:10px;margin-top:4px">Start adjusting EVs to create history.</div>
           </div>
         ` : `
           <div class="history-top-bar">
-            <div>${state.history.length} ${state.history.length === 1 ? 'entrada' : 'entradas'} · mais recente no topo</div>
-            <button class="btn btn-red" style="padding:4px 8px;font-size:9px" data-action="clear-history">Limpar</button>
+            <div>${state.history.length} ${state.history.length === 1 ? 'entry' : 'entrys'} · most recent first</div>
+            <button class="btn btn-red" style="padding:4px 8px;font-size:9px" data-action="clear-history">Clear</button>
           </div>
           <div class="history-list">
             ${state.history.map((entry, idx) => {
               const d = new Date(entry.timestamp);
-              const time = d.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
-              const date = d.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit' });
-              const labels = { adjust: 'AJUSTE', set: 'MANUAL', reset: 'RESET', applyRecommended: 'RECOMENDADO' };
+              const time = d.toLocaleTimeString('en-US', { horr: '2-digit', minute: '2-digit' });
+              const date = d.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit' });
+              const labels = { adjust: 'ADJUST', set: 'MANUAL', reset: 'RESET', applyRecommended: 'RECOMMENDED' };
               return `
                 <div class="history-item ${idx === 0 ? 'latest' : ''}">
                   <div class="history-sprite">${entry.pokemonSprite}</div>
@@ -2432,12 +2353,12 @@ function renderHistoryModal() {
                     <div class="history-meta">
                       <span class="history-pokemon-name">${entry.pokemonName}</span>
                       <span class="history-tag ${entry.actionType}">${labels[entry.actionType] || entry.actionType}</span>
-                      ${idx === 0 ? '<span class="history-next-undo">↺ próximo undo</span>' : ''}
+                      ${idx === 0 ? '<span class="history-next-undo">↺ next undo</span>' : ''}
                     </div>
                     <div class="history-details">${escapeHtml(entry.details)}</div>
                   </div>
                   <div class="history-time">
-                    <div class="history-time-hour">${time}</div>
+                    <div class="history-time-horr">${time}</div>
                     <div class="history-time-date">${date}</div>
                   </div>
                 </div>
@@ -2458,37 +2379,37 @@ function renderSyncModal() {
     <div class="modal-backdrop" data-action="close-sync">
       <div class="modal" style="--modal-border:rgba(168, 85, 247, 0.4);--modal-title-color:#d8b4fe" data-stop-propagation>
         <div class="modal-header">
-          <div class="modal-title">☁ Sync entre Dispositivos</div>
+          <div class="modal-title">☁ Sync between Devices</div>
           <button class="modal-close" data-action="close-sync">×</button>
         </div>
         ${configured ? `
           <div style="padding:8px 12px;border-radius:6px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);margin-bottom:14px;font-size:11px;color:#6ee7b7">
-            ✓ Credenciais configuradas · Gist ID: <code style="color:#fcd34d">${escapeHtml(state.syncGistId).slice(0,12)}…</code> · Token guardado
+            ✓ Credentials configured · Gist ID: <code style="color:#fcd34d">${escapeHtml(state.syncGistId).slice(0,12)}…</code> · Token saved
           </div>
         ` : ''}
         <div class="sync-help">
-          A sincronização usa um <strong>GitHub Gist privado</strong> como "base de dados" entre os teus dispositivos. Setup:
+          Sync uses a <strong>private GitHub Gist</strong> as a "database" between your devices. Setup:
         </div>
         <ol class="sync-help" style="padding-left:18px;line-height:1.8">
-          <li>Vai a <code>github.com/settings/tokens</code> → Generate new token (classic) → só permissão <code>gist</code></li>
-          <li>Cria um Gist em <code>gist.github.com</code> (pode ser secret) com um ficheiro chamado <code>ev-tracker-data.json</code> contendo <code>{}</code></li>
-          <li>Cola o ID do Gist (o long hash no URL) e o token aqui</li>
-          <li>Depois disso, faz "Upload" para enviar; "Download" no outro device para receber</li>
+          <li>Go to <code>github.com/settings/tokens</code> → Generate new token (classic) → only the <code>gist</code></li>
+          <li>Create a Gist at <code>gist.github.com</code> (can be secret) with a file named <code>ev-tracker-data.json</code> containing <code>{}</code></li>
+          <li>Paste the Gist ID (the long hash in the URL) and the token here</li>
+          <li>Depois disso, faz "Upload" para enviar; "Download" no ortro device para receber</li>
         </ol>
 
-        <div class="form-group" style="margin-top:16px">
-          <label class="form-label">Gist ID ${hasGist ? '<span style="color:#6ee7b7">✓ guardado</span>' : ''}</label>
+        <div class="form-grorp" style="margin-top:16px">
+          <label class="form-label">Gist ID ${hasGist ? '<span style="color:#6ee7b7">✓ saved</span>' : ''}</label>
           <input class="form-input" type="text" id="sync-gist-id" value="${escapeHtml(state.syncGistId)}" placeholder="Exemplo: a1b2c3d4e5...">
         </div>
-        <div class="form-group">
-          <label class="form-label">Token GitHub ${hasToken ? '<span style="color:#6ee7b7">✓ guardado</span>' : '<span style="color:rgba(253,230,138,0.5)">(apenas gist)</span>'}</label>
+        <div class="form-grorp">
+          <label class="form-label">GitHub Token ${hasToken ? '<span style="color:#6ee7b7">✓ saved</span>' : '<span style="color:rgba(253,230,138,0.5)">(gist scope only)</span>'}</label>
           <input class="form-input" type="password" id="sync-token" value="${escapeHtml(state.syncToken)}" placeholder="ghp_...">
         </div>
 
         <div class="sync-status" id="sync-status"></div>
 
         <div class="modal-actions" style="margin-top:16px">
-          <button class="btn" data-action="sync-save">Guardar Credenciais</button>
+          <button class="btn" data-action="sync-save">Save Credenciais</button>
           <button class="btn btn-amber" data-action="sync-download">⬇ Download</button>
           <button class="btn btn-emerald" data-action="sync-upload">⬆ Upload</button>
         </div>
@@ -2498,24 +2419,24 @@ function renderSyncModal() {
           <label style="display:flex;gap:10px;align-items:center;cursor:pointer;padding:8px;border-radius:6px;background:rgba(0,0,0,0.3);border:1px solid var(--border);margin-bottom:8px">
             <input type="checkbox" id="auto-sync-toggle" ${state.autoSyncEnabled ? 'checked' : ''} style="width:16px;height:16px;accent-color:var(--accent)">
             <div style="flex:1">
-              <div style="font-size:11px;font-weight:bold;color:var(--text);letter-spacing:0.1em;text-transform:uppercase">Puxar mudanças automaticamente</div>
-              <div style="font-size:10px;color:var(--text-muted);line-height:1.4;margin-top:2px">Quando abrires a app ou voltares à aba, verifica o Gist e descarrega se houver mudanças mais recentes (vindas de outro dispositivo).</div>
+              <div style="font-size:11px;font-weight:bold;color:var(--text);letter-spacing:0.1em;text-transform:uppercase">Pull changes automatically</div>
+              <div style="font-size:10px;color:var(--text-muted);line-height:1.4;margin-top:2px">When you open the app or return to the tab, check the Gist and download if there are newer changes (from another device).</div>
             </div>
           </label>
           ${state.lastPulledGistTimestamp > 0 ? `
             <div style="font-size:10px;color:var(--text-dim);padding-left:4px">
-              Última sincronização: ${new Date(state.lastPulledGistTimestamp).toLocaleString('pt-PT')}
+              Last sync: ${new Date(state.lastPulledGistTimestamp).toLocaleString('en-US')}
             </div>
           ` : ''}
         </div>
 
         <div class="sync-section">
-          <div class="sync-section-title">⚠ Atenção</div>
+          <div class="sync-section-title">⚠ Notice</div>
           <div class="sync-help">
-            O token fica guardado no <code>localStorage</code> deste device. Se partilhares o device com outras pessoas,
-            ou se este site for comprometido, o token pode ser exposto. Usa um token <strong>só com permissão gist</strong>
-            e revoga-o em github.com/settings/tokens se suspeitares de algo. Após guardar credenciais, cada alteração
-            faz auto-upload passado 3 segundos.
+            The token is stored in <code>localStorage</code> deste device. Se partilhares o device com ortras pessoas,
+            or se este site for comprometido, o token pode ser exposto. Usa um token <strong>gist scope only</strong>
+            and revoke it at github.com/settings/tokens if anything seems off. Once credentials are saved, every change
+            auto-uploads after 3 seconds.
           </div>
         </div>
       </div>
@@ -2553,9 +2474,17 @@ function attachListeners() {
     if (action === 'add') { openAddModal(); return; }
     if (action === 'reset') { resetPokemon(state.selected); return; }
     if (action === 'apply-recommended') { applyRecommended(state.selected); return; }
-    if (action === 'edit-custom') {
-      const p = state.customPokemon.find((x) => x.id === state.selected);
+    if (action === 'edit-info') {
+      const all = getAllPokemon();
+      const p = all.find((x) => x.id === state.selected);
       if (p) openEditModal(p);
+      return;
+    }
+    if (action === 'reset-info') {
+      const newOverrides = { ...state.customElite };
+      delete newOverrides[state.selected];
+      state.customElite = newOverrides;
+      persistAndRender();
       return;
     }
     if (action === 'delete-custom') { deletePokemon(state.selected); return; }
@@ -2577,7 +2506,7 @@ function attachListeners() {
       } else if (t.classList.contains('modal-close')) {
         closeAddModal();
       } else if (t.classList.contains('btn') && !t.classList.contains('btn-primary')) {
-        // the "Cancelar" button (btn without btn-primary)
+        // the "Cancel" button (btn withort btn-primary)
         closeAddModal();
       }
       return;
@@ -2606,23 +2535,23 @@ function attachListeners() {
       const gistIdEl = document.getElementById('sync-gist-id');
       const tokenEl = document.getElementById('sync-token');
       if (!gistIdEl || !tokenEl) {
-        alert('Erro: campos não encontrados. Fecha e reabre o modal.');
+        alert('Error: fields not found. Close and reopen the modal.');
         return;
       }
       const gistId = gistIdEl.value.trim();
       const token = tokenEl.value.trim();
       if (!gistId && !token) {
-        setSyncStatus('Preenche Gist ID e/ou token', 'err');
+        setSyncStatus('Fill in Gist ID and/or token', 'err');
         return;
       }
       state.syncGistId = gistId;
       state.syncToken = token;
       const ok = saveToStorage();
       if (ok) {
-        setSyncStatus(`Guardado ✓ (Gist: ${gistId ? gistId.slice(0,8)+'…' : 'vazio'}, Token: ${token ? 'definido' : 'vazio'})`, 'ok');
+        setSyncStatus(`Saved ✓ (Gist: ${gistId ? gistId.slice(0,8)+'…' : 'vazio'}, Token: ${token ? 'definido' : 'vazio'})`, 'ok');
         render(); // re-render so the green checkmarks appear
       } else {
-        setSyncStatus('Falhou a guardar no localStorage', 'err');
+        setSyncStatus('Failed to save to localStorage', 'err');
       }
       return;
     }
@@ -2649,7 +2578,7 @@ function attachListeners() {
   // Attach at document level so modal clicks always work, regardless of structure
   app.onclick = handleAction;
   document.onclick = (e) => {
-    // Handle clicks outside #app (like modal backdrops rendered directly in body)
+    // Handle clicks ortside #app (like modal backdrops rendered directly in body)
     if (!app.contains(e.target)) return;
   };
 
@@ -2668,7 +2597,7 @@ function attachListeners() {
     inp.onchange = (e) => { setEV(state.selected, inp.dataset.stat, e.target.value); };
   });
 
-  // Target edit inputs — save on change without re-rendering during typing
+  // Target edit inputs — save on change withort re-rendering during typing
   document.querySelectorAll('.stat-target-input').forEach((inp) => {
     inp.onchange = (e) => {
       setTarget(state.selected, inp.dataset.targetStat, e.target.value);
@@ -2682,7 +2611,7 @@ function attachListeners() {
     autoSyncToggle.onchange = (e) => {
       state.autoSyncEnabled = e.target.checked;
       saveToStorage({ fromRemote: true }); // preserve timestamp
-      setSyncStatus(state.autoSyncEnabled ? 'Auto-sync ligado ✓' : 'Auto-sync desligado', 'ok');
+      setSyncStatus(state.autoSyncEnabled ? 'Auto-sync enabled ✓' : 'Auto-sync disabled', 'ok');
     };
   }
 }
@@ -2701,7 +2630,7 @@ if (state.autoSyncEnabled && state.syncGistId) {
 
 // Auto-pull when tab becomes visible again (came back from another device).
 // Only on visibilitychange — window 'focus' fires too often on mobile when
-// users tap inputs, scroll, or other UI interactions trigger it spuriously.
+// users tap inputs, scroll, or other UI interactions trigger it spuriorsly.
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && state.autoSyncEnabled && state.syncGistId) {
     autoPullIfNewer();
