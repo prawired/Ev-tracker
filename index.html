@@ -947,9 +947,9 @@ input[type="number"]::-webkit-outer-spin-button {
 
 <script>
 // ============================================================
-// DATA
+// DATA — FIRERED ELITE TEAM
 // ============================================================
-const ELITE_TEAM = [
+const ELITE_TEAM_FIRERED = [
   {
     id: 'jynx',
     name: 'Jynx',
@@ -1114,7 +1114,169 @@ const ELITE_TEAM = [
   },
 ];
 
-const DEFAULT_SPOTS = {
+// ============================================================
+// DATA — EMERALD ELITE TEAM
+// ============================================================
+const ELITE_TEAM_EMERALD = [
+  {
+    id: 'em_swampert',
+    name: 'Swampert',
+    nature: 'Adamant',
+    sprite: '🌊',
+    color: '#4A90E2',
+    recommended: { atk: 252, hp: 252, spDef: 4 },
+    moves: [
+      { name: 'Surf', source: 'HM03 — Wallace (após Sootopolis)' },
+      { name: 'Earthquake', source: 'TM26 — Seafloor Cavern' },
+      { name: 'Ice Beam', source: 'TM13 — Abandoned Ship / Game Corner Mauville' },
+      { name: 'Rock Slide', source: 'TM39 — Fiery Path' },
+    ],
+    trainSpots: {
+      hp: 'Marill/Azumarill (Petalburg/Route 117) — 2 EVs/KO',
+      atk: 'Machop (Granite Cave) — 1 EV/KO',
+      def: 'Geodude (Granite Cave) — 1 EV/KO',
+      spAtk: 'Oddish/Gloom (Route 110) — 1-2 EVs/KO',
+      spDef: 'Tentacool (água) — 1 EV/KO',
+      speed: 'Zubat (Granite Cave) / Electrike (Route 110) — 1 EV/KO',
+    },
+  },
+  {
+    id: 'em_metagross',
+    name: 'Metagross',
+    nature: 'Adamant',
+    sprite: '🪨',
+    color: '#7C3AED',
+    recommended: { atk: 252, hp: 252, def: 4 },
+    moves: [
+      { name: 'Meteor Mash', source: 'Natural nível 45' },
+      { name: 'Earthquake', source: 'TM26 — Seafloor Cavern' },
+      { name: 'Psychic', source: 'TM29 — Victory Road' },
+      { name: 'Shadow Ball', source: 'TM30 — Mt. Pyre (físico em Gen 3!)' },
+    ],
+    trainSpots: {
+      hp: 'Marill/Azumarill — 2 EVs/KO',
+      atk: 'Machop (Granite Cave) — 1 EV/KO',
+      def: 'Geodude — 1 EV/KO',
+      spAtk: 'Oddish — 1 EV/KO',
+      spDef: 'Tentacool — 1 EV/KO',
+      speed: 'Zubat / Electrike — 1 EV/KO',
+    },
+  },
+  {
+    id: 'em_manectric',
+    name: 'Manectric',
+    nature: 'Timid',
+    sprite: '⚡',
+    color: '#EAB308',
+    recommended: { spAtk: 252, speed: 252, hp: 4 },
+    moves: [
+      { name: 'Thunderbolt', source: 'TM24 — Wattson (Mauville Gym)' },
+      { name: 'Crunch', source: 'Natural nível 47 (especial em Gen 3!)' },
+      { name: 'Thunder Wave', source: 'Natural nível 13' },
+      { name: 'Hidden Power', source: 'TM10 — Fortree (ideal Grass/Ice)' },
+    ],
+    trainSpots: {
+      hp: 'Marill/Azumarill — 2 EVs/KO',
+      atk: 'Machop — 1 EV/KO',
+      def: 'Geodude — 1 EV/KO',
+      spAtk: 'Oddish/Gloom (Route 110) — 1-2 EVs/KO',
+      spDef: 'Tentacool — 1 EV/KO',
+      speed: 'Electrike (Route 110) — 1 EV/KO',
+    },
+  },
+  {
+    id: 'em_flygon',
+    name: 'Flygon',
+    nature: 'Adamant',
+    sprite: '🐲',
+    color: '#84CC16',
+    recommended: { atk: 252, speed: 252, hp: 4 },
+    moves: [
+      { name: 'Earthquake', source: 'TM26 — Seafloor Cavern' },
+      { name: 'Dragon Claw', source: 'TM02 — Meteor Falls' },
+      { name: 'Rock Slide', source: 'TM39 — Fiery Path' },
+      { name: 'Aerial Ace', source: 'TM40 — Fortree' },
+    ],
+    trainSpots: {
+      hp: 'Marill/Azumarill — 2 EVs/KO',
+      atk: 'Machop — 1 EV/KO',
+      def: 'Geodude — 1 EV/KO',
+      spAtk: 'Oddish — 1 EV/KO',
+      spDef: 'Tentacool — 1 EV/KO',
+      speed: 'Zubat / Electrike — 1 EV/KO',
+    },
+  },
+  {
+    id: 'em_walrein',
+    name: 'Walrein',
+    nature: 'Modest',
+    sprite: '❄️',
+    color: '#06B6D4',
+    recommended: { spAtk: 252, hp: 252, spDef: 4 },
+    moves: [
+      { name: 'Ice Beam', source: 'TM13 — Abandoned Ship / Game Corner' },
+      { name: 'Surf', source: 'HM03 — Wallace' },
+      { name: 'Toxic', source: 'TM06 — Fiery Path' },
+      { name: 'Sheer Cold', source: 'Natural nível 56 (OHKO)' },
+    ],
+    trainSpots: {
+      hp: 'Marill/Azumarill — 2 EVs/KO',
+      atk: 'Machop — 1 EV/KO',
+      def: 'Geodude — 1 EV/KO',
+      spAtk: 'Oddish/Gloom — 1-2 EVs/KO',
+      spDef: 'Tentacool — 1 EV/KO',
+      speed: 'Zubat — 1 EV/KO',
+    },
+  },
+  {
+    id: 'em_hariyama',
+    name: 'Hariyama',
+    nature: 'Adamant',
+    sprite: '🥋',
+    color: '#F97316',
+    recommended: { atk: 252, hp: 252, spDef: 4 },
+    moves: [
+      { name: 'Cross Chop', source: 'Natural Makuhita nível 25' },
+      { name: 'Brick Break', source: 'TM31 — Sootopolis Mart' },
+      { name: 'Rock Tomb', source: 'TM39... espera, é Rock Slide' },
+      { name: 'Knock Off', source: 'Natural Makuhita nível 22' },
+    ],
+    trainSpots: {
+      hp: 'Marill/Azumarill — 2 EVs/KO',
+      atk: 'Machop (Granite Cave) — 1 EV/KO',
+      def: 'Geodude — 1 EV/KO',
+      spAtk: 'Oddish — 1 EV/KO',
+      spDef: 'Tentacool — 1 EV/KO',
+      speed: 'Zubat / Electrike — 1 EV/KO',
+    },
+  },
+];
+
+// Map of game id → elite team
+const GAMES = {
+  firered: {
+    id: 'firered',
+    label: 'FireRed',
+    sprite: '🔥',
+    subtitle: 'Elite 4 · Gen 3 · Kanto',
+    team: ELITE_TEAM_FIRERED,
+    accent: '#fbbf24',
+  },
+  emerald: {
+    id: 'emerald',
+    label: 'Emerald',
+    sprite: '💎',
+    subtitle: 'Elite 4 · Gen 3 · Hoenn',
+    team: ELITE_TEAM_EMERALD,
+    accent: '#10b981',
+  },
+};
+
+// Backwards-compat reference (old code may still use ELITE_TEAM)
+let ELITE_TEAM = ELITE_TEAM_FIRERED;
+
+// Default training spots, picked per game
+const DEFAULT_SPOTS_FIRERED = {
   hp: 'Chansey (Safari Zone) — 2 EVs/KO',
   atk: 'Mankey/Primeape (Route 22) — 1 EV/KO',
   def: 'Geodude (Rock Tunnel) — 1 EV/KO',
@@ -1122,6 +1284,23 @@ const DEFAULT_SPOTS = {
   spDef: 'Tentacool (qualquer água) — 1 EV/KO',
   speed: 'Zubat/Diglett — 1 EV/KO',
 };
+
+const DEFAULT_SPOTS_EMERALD = {
+  hp: 'Marill/Azumarill (Route 117) — 2 EVs/KO',
+  atk: 'Machop (Granite Cave) — 1 EV/KO',
+  def: 'Geodude (Granite Cave) — 1 EV/KO',
+  spAtk: 'Oddish/Gloom (Route 110) — 1-2 EVs/KO',
+  spDef: 'Tentacool (qualquer água) — 1 EV/KO',
+  speed: 'Zubat / Electrike — 1 EV/KO',
+};
+
+function getDefaultSpots() {
+  return state.activeGame === 'emerald' ? DEFAULT_SPOTS_EMERALD : DEFAULT_SPOTS_FIRERED;
+}
+
+function getActiveTeam() {
+  return state.activeGame === 'emerald' ? ELITE_TEAM_EMERALD : ELITE_TEAM_FIRERED;
+}
 
 const NATURES = ['Hardy', 'Lonely', 'Brave', 'Adamant', 'Naughty', 'Bold', 'Docile', 'Relaxed', 'Impish', 'Lax', 'Timid', 'Hasty', 'Serious', 'Jolly', 'Naive', 'Modest', 'Mild', 'Quiet', 'Bashful', 'Rash', 'Calm', 'Gentle', 'Sassy', 'Careful', 'Quirky'];
 
@@ -1146,29 +1325,85 @@ const emptyEVs = () => ({ hp: 0, atk: 0, def: 0, spAtk: 0, spDef: 0, speed: 0 })
 // STATE
 // ============================================================
 const state = {
-  evs: {},
-  customPokemon: [],
-  selected: ELITE_TEAM[0].id,
+  activeGame: 'firered', // 'firered' | 'emerald'
+  // Per-game data — each is an object keyed by game id
+  gameData: {
+    firered: {
+      evs: {},
+      customPokemon: [],
+      activeVariants: {},
+      hiddenElite: {},
+      customTargets: {},
+      selected: null,
+    },
+    emerald: {
+      evs: {},
+      customPokemon: [],
+      activeVariants: {},
+      hiddenElite: {},
+      customTargets: {},
+      selected: null,
+    },
+  },
+  // Shared data
   history: [],
-  activeVariants: {},
-  hiddenElite: {},
-  customTargets: {},
   syncGistId: '',
   syncToken: '',
-  lastLocalModified: 0,    // timestamp of last local change
-  lastPulledGistTimestamp: 0,  // timestamp from the last Gist we pulled
-  autoSyncEnabled: true,   // auto-pull on load/focus
-  pendingUpload: false,    // there's a debounced upload waiting
-  isUploading: false,      // upload HTTP request in flight
+  lastLocalModified: 0,
+  lastPulledGistTimestamp: 0,
+  autoSyncEnabled: true,
+  pendingUpload: false,
+  isUploading: false,
   saveStatus: '',
   showAddModal: false,
   showHistoryModal: false,
   showSyncModal: false,
+  showGameSwitcher: false,
   editingId: null,
   editingTargets: null,
   form: { name: '', nature: 'Hardy', sprite: '⭐', color: '#8B5CF6' },
   syncStatus: '',
 };
+
+// Convenience accessors that proxy state.gameData[activeGame].xxx
+// These let the rest of the code keep using state.evs etc. as before.
+Object.defineProperty(state, 'evs', {
+  get() { return this.gameData[this.activeGame].evs; },
+  set(v) { this.gameData[this.activeGame].evs = v; },
+  configurable: true,
+});
+Object.defineProperty(state, 'customPokemon', {
+  get() { return this.gameData[this.activeGame].customPokemon; },
+  set(v) { this.gameData[this.activeGame].customPokemon = v; },
+  configurable: true,
+});
+Object.defineProperty(state, 'activeVariants', {
+  get() { return this.gameData[this.activeGame].activeVariants; },
+  set(v) { this.gameData[this.activeGame].activeVariants = v; },
+  configurable: true,
+});
+Object.defineProperty(state, 'hiddenElite', {
+  get() { return this.gameData[this.activeGame].hiddenElite; },
+  set(v) { this.gameData[this.activeGame].hiddenElite = v; },
+  configurable: true,
+});
+Object.defineProperty(state, 'customTargets', {
+  get() { return this.gameData[this.activeGame].customTargets; },
+  set(v) { this.gameData[this.activeGame].customTargets = v; },
+  configurable: true,
+});
+Object.defineProperty(state, 'selected', {
+  get() {
+    const gd = this.gameData[this.activeGame];
+    if (!gd.selected) {
+      const team = this.activeGame === 'emerald' ? ELITE_TEAM_EMERALD : ELITE_TEAM_FIRERED;
+      gd.selected = team[0]?.id || null;
+    }
+    return gd.selected;
+  },
+  set(v) { this.gameData[this.activeGame].selected = v; },
+  configurable: true,
+});
 
 let saveStatusTimer = null;
 let syncStatusTimer = null;
@@ -1184,12 +1419,24 @@ function loadFromStorage() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const data = JSON.parse(raw);
-    if (data.evs) state.evs = data.evs;
-    if (data.customPokemon) state.customPokemon = data.customPokemon;
+
+    // New format: gameData
+    if (data.gameData) {
+      if (data.gameData.firered) Object.assign(state.gameData.firered, data.gameData.firered);
+      if (data.gameData.emerald) Object.assign(state.gameData.emerald, data.gameData.emerald);
+    } else {
+      // Legacy format: flat structure → migrate to firered (since that was the original)
+      if (data.evs) state.gameData.firered.evs = data.evs;
+      if (data.customPokemon) state.gameData.firered.customPokemon = data.customPokemon;
+      if (data.activeVariants) state.gameData.firered.activeVariants = data.activeVariants;
+      if (data.hiddenElite) state.gameData.firered.hiddenElite = data.hiddenElite;
+      if (data.customTargets) state.gameData.firered.customTargets = data.customTargets;
+    }
+
+    if (typeof data.activeGame === 'string' && GAMES[data.activeGame]) {
+      state.activeGame = data.activeGame;
+    }
     if (data.history) state.history = data.history;
-    if (data.activeVariants) state.activeVariants = data.activeVariants;
-    if (data.hiddenElite) state.hiddenElite = data.hiddenElite;
-    if (data.customTargets) state.customTargets = data.customTargets;
     if (data.syncGistId) state.syncGistId = data.syncGistId;
     if (data.syncToken) state.syncToken = data.syncToken;
     if (typeof data.lastLocalModified === 'number') state.lastLocalModified = data.lastLocalModified;
@@ -1202,17 +1449,14 @@ function loadFromStorage() {
 
 function saveToStorage(opts = {}) {
   try {
-    // Mark as locally modified unless we're explicitly saving from a remote pull
     if (!opts.fromRemote) {
       state.lastLocalModified = Date.now();
     }
     const data = {
-      evs: state.evs,
-      customPokemon: state.customPokemon,
+      version: 2,
+      activeGame: state.activeGame,
+      gameData: state.gameData,
       history: state.history,
-      activeVariants: state.activeVariants,
-      hiddenElite: state.hiddenElite,
-      customTargets: state.customTargets,
       syncGistId: state.syncGistId,
       syncToken: state.syncToken,
       lastLocalModified: state.lastLocalModified,
@@ -1228,11 +1472,21 @@ function saveToStorage(opts = {}) {
 }
 
 function initEVs() {
-  const init = {};
-  [...ELITE_TEAM, ...state.customPokemon].forEach((p) => {
-    init[p.id] = state.evs[p.id] || emptyEVs();
-  });
-  state.evs = init;
+  // Initialize EV objects for both games' elite teams + custom pokemon
+  for (const gameId of Object.keys(GAMES)) {
+    const team = GAMES[gameId].team;
+    const gd = state.gameData[gameId];
+    const init = {};
+    [...team, ...gd.customPokemon].forEach((p) => {
+      init[p.id] = gd.evs[p.id] || emptyEVs();
+    });
+    gd.evs = init;
+    // Make sure selected is valid for this game
+    if (!gd.selected) {
+      const visible = team.filter((p) => !gd.hiddenElite[p.id]);
+      gd.selected = (visible[0] || team[0])?.id || null;
+    }
+  }
 }
 
 // ============================================================
@@ -1252,12 +1506,10 @@ async function syncToGist() {
   setSyncStatus('A sincronizar...', '');
   try {
     const payload = {
-      evs: state.evs,
-      customPokemon: state.customPokemon,
+      version: 2,
+      activeGame: state.activeGame,
+      gameData: state.gameData,
       history: state.history,
-      activeVariants: state.activeVariants,
-      hiddenElite: state.hiddenElite,
-      customTargets: state.customTargets,
       lastModified: state.lastLocalModified || Date.now(),
     };
     const res = await fetch(`https://api.github.com/gists/${state.syncGistId}`, {
@@ -1310,12 +1562,22 @@ async function syncFromGist(opts = {}) {
       return { status: 'same', remoteTs };
     }
 
-    if (data.evs) state.evs = data.evs;
-    if (data.customPokemon) state.customPokemon = data.customPokemon;
+    if (data.gameData) {
+      // New format
+      if (data.gameData.firered) Object.assign(state.gameData.firered, data.gameData.firered);
+      if (data.gameData.emerald) Object.assign(state.gameData.emerald, data.gameData.emerald);
+    } else {
+      // Legacy flat format → migrate to firered
+      if (data.evs) state.gameData.firered.evs = data.evs;
+      if (data.customPokemon) state.gameData.firered.customPokemon = data.customPokemon;
+      if (data.activeVariants) state.gameData.firered.activeVariants = data.activeVariants;
+      if (data.hiddenElite) state.gameData.firered.hiddenElite = data.hiddenElite;
+      if (data.customTargets) state.gameData.firered.customTargets = data.customTargets;
+    }
+    if (typeof data.activeGame === 'string' && GAMES[data.activeGame]) {
+      state.activeGame = data.activeGame;
+    }
     if (data.history) state.history = data.history;
-    if (data.activeVariants) state.activeVariants = data.activeVariants;
-    if (data.hiddenElite) state.hiddenElite = data.hiddenElite;
-    if (data.customTargets) state.customTargets = data.customTargets;
     state.lastPulledGistTimestamp = remoteTs;
     state.lastLocalModified = remoteTs; // aligns local "clock" with remote
     initEVs();
@@ -1438,7 +1700,8 @@ function resolvePokemon(base) {
 }
 
 function getAllPokemon() {
-  const elite = ELITE_TEAM.filter((p) => !state.hiddenElite[p.id]).map(resolvePokemon);
+  const team = getActiveTeam();
+  const elite = team.filter((p) => !state.hiddenElite[p.id]).map(resolvePokemon);
   const custom = state.customPokemon.map((p) => {
     const customT = state.customTargets[p.id];
     if (customT) {
@@ -1455,12 +1718,11 @@ function getAllPokemon() {
 }
 
 function getAllPokemonIncludingHidden() {
-  // Used internally when we need to reference even hidden pokémon
-  return [...ELITE_TEAM.map(resolvePokemon), ...state.customPokemon];
+  return [...getActiveTeam().map(resolvePokemon), ...state.customPokemon];
 }
 
 function findBase(id) {
-  return ELITE_TEAM.find((p) => p.id === id);
+  return getActiveTeam().find((p) => p.id === id);
 }
 
 function setStatus(msg, duration) {
@@ -1619,7 +1881,7 @@ function savePokemon() {
       sprite: state.form.sprite,
       color: state.form.color,
       isCustom: true,
-      trainSpots: DEFAULT_SPOTS,
+      trainSpots: getDefaultSpots(),
     };
     state.customPokemon = [...state.customPokemon, newPokemon];
     state.evs = { ...state.evs, [newPokemon.id]: emptyEVs() };
@@ -1627,6 +1889,23 @@ function savePokemon() {
   }
   state.showAddModal = false;
   persistAndRender();
+}
+
+function switchGame(gameId) {
+  if (!GAMES[gameId]) return;
+  if (state.activeGame === gameId) {
+    state.showGameSwitcher = false;
+    render();
+    return;
+  }
+  state.activeGame = gameId;
+  state.showGameSwitcher = false;
+  // editingTargets is per-pokemon, reset on game change to avoid stale state
+  state.editingTargets = null;
+  initEVs();
+  if (saveToStorage()) showSaveStatus(`Jogo: ${GAMES[gameId].label} ${GAMES[gameId].sprite}`);
+  scheduleAutoSync();
+  render();
 }
 
 function deletePokemon(pokemonId) {
@@ -1639,7 +1918,7 @@ function deletePokemon(pokemonId) {
     const { [pokemonId]: __, ...restTargets } = state.customTargets;
     state.customTargets = restTargets;
   }
-  if (state.selected === pokemonId) state.selected = getAllPokemon()[0]?.id || ELITE_TEAM[0].id;
+  if (state.selected === pokemonId) state.selected = getAllPokemon()[0]?.id || getActiveTeam()[0].id;
   persistAndRender();
 }
 
@@ -1693,14 +1972,11 @@ function resetTargetsToDefault(pokemonId) {
 // ============================================================
 function exportJSON() {
   const data = {
-    evs: state.evs,
-    customPokemon: state.customPokemon,
-    history: state.history,
-    activeVariants: state.activeVariants,
-    hiddenElite: state.hiddenElite,
-    customTargets: state.customTargets,
-    exportedAt: new Date().toISOString(),
     version: 2,
+    activeGame: state.activeGame,
+    gameData: state.gameData,
+    history: state.history,
+    exportedAt: new Date().toISOString(),
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -1725,12 +2001,21 @@ function importJSON() {
       const text = await file.text();
       const data = JSON.parse(text);
       if (!confirm('Importar este ficheiro substitui os teus dados atuais. Continuar?')) return;
-      if (data.evs) state.evs = data.evs;
-      if (data.customPokemon) state.customPokemon = data.customPokemon;
+      if (data.gameData) {
+        if (data.gameData.firered) Object.assign(state.gameData.firered, data.gameData.firered);
+        if (data.gameData.emerald) Object.assign(state.gameData.emerald, data.gameData.emerald);
+      } else {
+        // Legacy
+        if (data.evs) state.gameData.firered.evs = data.evs;
+        if (data.customPokemon) state.gameData.firered.customPokemon = data.customPokemon;
+        if (data.activeVariants) state.gameData.firered.activeVariants = data.activeVariants;
+        if (data.hiddenElite) state.gameData.firered.hiddenElite = data.hiddenElite;
+        if (data.customTargets) state.gameData.firered.customTargets = data.customTargets;
+      }
+      if (typeof data.activeGame === 'string' && GAMES[data.activeGame]) {
+        state.activeGame = data.activeGame;
+      }
       if (data.history) state.history = data.history;
-      if (data.activeVariants) state.activeVariants = data.activeVariants;
-      if (data.hiddenElite) state.hiddenElite = data.hiddenElite;
-      if (data.customTargets) state.customTargets = data.customTargets;
       initEVs();
       persistAndRender();
       showSaveStatus('Importado ✓', 2000);
@@ -1769,12 +2054,34 @@ function render() {
 }
 
 function renderHeader() {
+  const game = GAMES[state.activeGame];
   return `
     <header class="header">
       <div class="header-top">
         <div>
           <div class="title">EV TRACKER</div>
-          <div class="subtitle">FireRed Elite 4 Run · Gen 3</div>
+          <div class="subtitle" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span>${game.subtitle}</span>
+            <button class="btn" data-action="toggle-game-switcher" style="padding:3px 8px;min-height:24px;font-size:10px;border-color:${game.accent}66;color:${game.accent};background:${game.accent}15">
+              <span style="font-size:13px;line-height:1">${game.sprite}</span>
+              <span>${game.label}</span>
+              <span style="opacity:0.6;font-size:9px;margin-left:2px">▾</span>
+            </button>
+          </div>
+          ${state.showGameSwitcher ? `
+            <div style="margin-top:8px;padding:8px;border-radius:8px;background:rgba(0,0,0,0.4);border:1px solid var(--border);display:inline-flex;gap:6px;flex-wrap:wrap">
+              ${Object.values(GAMES).map((g) => {
+                const active = g.id === state.activeGame;
+                return `
+                  <button class="btn" data-action="switch-game" data-game="${g.id}" style="padding:6px 12px;border-color:${active ? g.accent : 'rgba(255,255,255,0.1)'};color:${active ? g.accent : 'var(--text-muted)'};background:${active ? g.accent + '22' : 'transparent'};${active ? 'box-shadow:0 0 12px ' + g.accent + '55' : ''}">
+                    <span style="font-size:14px">${g.sprite}</span>
+                    <span>${g.label}</span>
+                    ${active ? '<span style="font-size:9px;opacity:0.7;margin-left:2px">✓</span>' : ''}
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          ` : ''}
         </div>
         <div class="header-actions">
           <button class="btn btn-emerald" data-action="export">
@@ -1830,10 +2137,12 @@ function renderPokemonCard(p, accentColor) {
 }
 
 function renderEliteGrid(allPokemon) {
-  const resolved = ELITE_TEAM.filter((p) => !state.hiddenElite[p.id]).map(resolvePokemon);
+  const team = getActiveTeam();
+  const resolved = team.filter((p) => !state.hiddenElite[p.id]).map(resolvePokemon);
+  const game = GAMES[state.activeGame];
   return `
     <div style="margin-bottom:16px">
-      <div class="section-label" style="color:rgba(251, 191, 36, 0.8)">★ Elite Team</div>
+      <div class="section-label" style="color:rgba(251, 191, 36, 0.8)">★ Elite Team — ${game.label}</div>
       ${resolved.length === 0
         ? '<div class="extras-empty">Escondeste todos os membros da Elite Team. Vê a secção "Pokémon escondidos" em baixo para recuperares algum.</div>'
         : `<div class="grid grid-pokemon">${resolved.map((p) => renderPokemonCard(p, '#fbbf24')).join('')}</div>`
@@ -1843,7 +2152,7 @@ function renderEliteGrid(allPokemon) {
 }
 
 function renderHiddenElite() {
-  const hidden = ELITE_TEAM.filter((p) => state.hiddenElite[p.id]).map(resolvePokemon);
+  const hidden = getActiveTeam().filter((p) => state.hiddenElite[p.id]).map(resolvePokemon);
   if (hidden.length === 0) return '';
   return `
     <div style="margin-bottom:20px">
@@ -1973,7 +2282,7 @@ function renderStatRow(selectedPokemon, selectedEVs, totalEVs, stat) {
   const pct = (val / MAX_PER_STAT) * 100;
   const isMax = val >= MAX_PER_STAT;
   const recommended = (selectedPokemon.recommended && selectedPokemon.recommended[stat.key]) || 0;
-  const trainSpot = (selectedPokemon.trainSpots && selectedPokemon.trainSpots[stat.key]) || DEFAULT_SPOTS[stat.key];
+  const trainSpot = (selectedPokemon.trainSpots && selectedPokemon.trainSpots[stat.key]) || getDefaultSpots()[stat.key];
   const isEditingTargets = state.editingTargets === selectedPokemon.id;
 
   let targetDisplay = '';
@@ -2237,6 +2546,8 @@ function attachListeners() {
     if (action === 'export') { exportJSON(); return; }
     if (action === 'import') { importJSON(); return; }
     if (action === 'sync') { state.showSyncModal = true; render(); return; }
+    if (action === 'toggle-game-switcher') { state.showGameSwitcher = !state.showGameSwitcher; render(); return; }
+    if (action === 'switch-game') { switchGame(t.dataset.game); return; }
     if (action === 'undo') { undoLastAction(); return; }
     if (action === 'history') { state.showHistoryModal = true; render(); return; }
     if (action === 'add') { openAddModal(); return; }
