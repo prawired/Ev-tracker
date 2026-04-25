@@ -1331,26 +1331,40 @@ async function syncFromGist(opts = {}) {
 
 // Auto-pull wrapper: runs on load/focus. Silently handles cases where
 // there's no sync configured or local has newer unsynced changes.
+let lastAutoPullAt = 0;
+const MIN_PULL_INTERVAL_MS = 30000; // don't auto-pull more than once per 30s
+const RECENT_EDIT_GUARD_MS = 10000; // don't pull if edited in the last 10s
+
 async function autoPullIfNewer() {
   if (!state.autoSyncEnabled) return;
   if (!state.syncGistId) return;
 
-  // CRITICAL: if there's an upload pending or in flight, do NOT pull.
-  // Otherwise we'd download the Gist's old version and overwrite the
-  // user's recent changes that haven't been uploaded yet.
-  if (state.pendingUpload) {
-    await flushPendingUpload();
-    return; // we just uploaded, no need to download
-  }
-  if (state.isUploading) {
-    return; // upload in flight, will retry on next focus
+  const now = Date.now();
+
+  // Throttle: don't auto-pull too frequently (focus events can fire often on iOS)
+  if (now - lastAutoPullAt < MIN_PULL_INTERVAL_MS) return;
+
+  // Recent edit guard: if user edited locally in the last N seconds,
+  // they're actively using the app — DON'T pull and risk overwriting
+  if (state.lastLocalModified && (now - state.lastLocalModified) < RECENT_EDIT_GUARD_MS) {
+    return;
   }
 
+  // CRITICAL: if there's an upload pending or in flight, do NOT pull.
+  if (state.pendingUpload) {
+    await flushPendingUpload();
+    lastAutoPullAt = Date.now();
+    return;
+  }
+  if (state.isUploading) {
+    return;
+  }
+
+  lastAutoPullAt = now;
   const result = await syncFromGist({ silent: true, skipIfLocalNewer: true, skipIfSame: true });
   if (result.status === 'updated') {
     setStatus('Dados atualizados do Gist ✓', 3000);
   }
-  // other statuses (same, no-credentials, error, local-newer) are silent
 }
 
 function setSyncStatus(msg, type) {
@@ -2374,16 +2388,11 @@ if (state.autoSyncEnabled && state.syncGistId) {
   autoPullIfNewer();
 }
 
-// Auto-pull when tab becomes visible again (came back from another device)
+// Auto-pull when tab becomes visible again (came back from another device).
+// Only on visibilitychange — window 'focus' fires too often on mobile when
+// users tap inputs, scroll, or other UI interactions trigger it spuriously.
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && state.autoSyncEnabled && state.syncGistId) {
-    autoPullIfNewer();
-  }
-});
-
-// Also catch window focus for older browsers
-window.addEventListener('focus', () => {
-  if (state.autoSyncEnabled && state.syncGistId) {
     autoPullIfNewer();
   }
 });
