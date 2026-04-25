@@ -474,14 +474,14 @@ body {
   -moz-appearance: textfield;
 }
 
-.stat-input::-webkit-orter-spin-button,
+.stat-input::-webkit-outer-spin-button,
 .stat-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 .stat-input:focus {
-  ortline: none;
+  outline: none;
   border-color: var(--accent);
 }
 
@@ -685,7 +685,7 @@ body {
 }
 
 .form-input:focus, .form-select:focus {
-  ortline: none;
+  outline: none;
   border-color: var(--purple);
 }
 
@@ -920,7 +920,7 @@ body {
 
 /* Hide number spinners */
 input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-orter-spin-button {
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -1513,8 +1513,8 @@ async function autoPullIfNewer() {
 function setSyncStatus(msg, type) {
   state.syncStatus = { msg, type };
   renderSyncStatus();
-  clearTimeort(syncStatusTimer);
-  syncStatusTimer = setTimeort(() => {
+  clearTimeout(syncStatusTimer);
+  syncStatusTimer = setTimeout(() => {
     state.syncStatus = '';
     renderSyncStatus();
   }, 4000);
@@ -1536,9 +1536,9 @@ function renderSyncStatus() {
 
 function scheduleAutoSync() {
   if (!state.syncGistId || !state.syncToken) return;
-  clearTimeort(autoSyncTimer);
+  clearTimeout(autoSyncTimer);
   state.pendingUpload = true;
-  autoSyncTimer = setTimeort(async () => {
+  autoSyncTimer = setTimeout(async () => {
     await syncToGist();
     state.pendingUpload = false;
   }, 3000);
@@ -1547,7 +1547,7 @@ function scheduleAutoSync() {
 // Force any pending upload to complete immediately
 async function flushPendingUpload() {
   if (!state.pendingUpload) return;
-  clearTimeort(autoSyncTimer);
+  clearTimeout(autoSyncTimer);
   await syncToGist();
   state.pendingUpload = false;
 }
@@ -1620,9 +1620,9 @@ function setStatus(msg, duration) {
   state.saveStatus = msg;
   const el = document.getElementById('status-indicator');
   if (el) el.textContent = msg || '\u00A0';
-  clearTimeort(saveStatusTimer);
+  clearTimeout(saveStatusTimer);
   if (duration > 0) {
-    saveStatusTimer = setTimeort(() => {
+    saveStatusTimer = setTimeout(() => {
       state.saveStatus = '';
       const el2 = document.getElementById('status-indicator');
       if (el2) el2.textContent = '\u00A0';
@@ -2394,7 +2394,7 @@ function renderSyncModal() {
           <li>Go to <code>github.com/settings/tokens</code> → Generate new token (classic) → only the <code>gist</code></li>
           <li>Create a Gist at <code>gist.github.com</code> (can be secret) with a file named <code>ev-tracker-data.json</code> containing <code>{}</code></li>
           <li>Paste the Gist ID (the long hash in the URL) and the token here</li>
-          <li>Depois disso, faz "Upload" para enviar; "Download" no ortro device para receber</li>
+          <li>Then click "Upload" to send; "Download" on the other device to receive</li>
         </ol>
 
         <div class="form-grorp" style="margin-top:16px">
@@ -2433,7 +2433,7 @@ function renderSyncModal() {
         <div class="sync-section">
           <div class="sync-section-title">⚠ Notice</div>
           <div class="sync-help">
-            The token is stored in <code>localStorage</code> deste device. Se partilhares o device com ortras pessoas,
+            The token is stored in this device's <code>localStorage</code>. If you share this device with others,
             or se este site for comprometido, o token pode ser exposto. Usa um token <strong>gist scope only</strong>
             and revoke it at github.com/settings/tokens if anything seems off. Once credentials are saved, every change
             auto-uploads after 3 seconds.
@@ -2506,7 +2506,7 @@ function attachListeners() {
       } else if (t.classList.contains('modal-close')) {
         closeAddModal();
       } else if (t.classList.contains('btn') && !t.classList.contains('btn-primary')) {
-        // the "Cancel" button (btn withort btn-primary)
+        // the "Cancel" button (btn without btn-primary)
         closeAddModal();
       }
       return;
@@ -2578,7 +2578,7 @@ function attachListeners() {
   // Attach at document level so modal clicks always work, regardless of structure
   app.onclick = handleAction;
   document.onclick = (e) => {
-    // Handle clicks ortside #app (like modal backdrops rendered directly in body)
+    // Handle clicks outside #app (like modal backdrops rendered directly in body)
     if (!app.contains(e.target)) return;
   };
 
@@ -2597,7 +2597,7 @@ function attachListeners() {
     inp.onchange = (e) => { setEV(state.selected, inp.dataset.stat, e.target.value); };
   });
 
-  // Target edit inputs — save on change withort re-rendering during typing
+  // Target edit inputs — save on change without re-rendering during typing
   document.querySelectorAll('.stat-target-input').forEach((inp) => {
     inp.onchange = (e) => {
       setTarget(state.selected, inp.dataset.targetStat, e.target.value);
