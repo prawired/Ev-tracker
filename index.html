@@ -1158,6 +1158,8 @@ const state = {
   lastLocalModified: 0,    // timestamp of last local change
   lastPulledGistTimestamp: 0,  // timestamp from the last Gist we pulled
   autoSyncEnabled: true,   // auto-pull on load/focus
+  pendingUpload: false,    // there's a debounced upload waiting
+  isUploading: false,      // upload HTTP request in flight
   saveStatus: '',
   showAddModal: false,
   showHistoryModal: false,
@@ -1241,6 +1243,12 @@ async function syncToGist() {
     setSyncStatus('Falta token ou Gist ID', 'err');
     return;
   }
+  if (state.isUploading) {
+    // Another upload is in flight; skip this one (the latest state will
+    // be picked up by the next debounced run if anything changed)
+    return;
+  }
+  state.isUploading = true;
   setSyncStatus('A sincronizar...', '');
   try {
     const payload = {
@@ -1268,6 +1276,8 @@ async function syncToGist() {
     setSyncStatus('Enviado para Gist ✓', 'ok');
   } catch (e) {
     setSyncStatus(`Erro: ${e.message}`, 'err');
+  } finally {
+    state.isUploading = false;
   }
 }
 
@@ -1324,13 +1334,23 @@ async function syncFromGist(opts = {}) {
 async function autoPullIfNewer() {
   if (!state.autoSyncEnabled) return;
   if (!state.syncGistId) return;
+
+  // CRITICAL: if there's an upload pending or in flight, do NOT pull.
+  // Otherwise we'd download the Gist's old version and overwrite the
+  // user's recent changes that haven't been uploaded yet.
+  if (state.pendingUpload) {
+    await flushPendingUpload();
+    return; // we just uploaded, no need to download
+  }
+  if (state.isUploading) {
+    return; // upload in flight, will retry on next focus
+  }
+
   const result = await syncFromGist({ silent: true, skipIfLocalNewer: true, skipIfSame: true });
   if (result.status === 'updated') {
     setStatus('Dados atualizados do Gist ✓', 3000);
-  } else if (result.status === 'local-newer') {
-    setStatus('Mudanças locais não sincronizadas', 3000);
   }
-  // other statuses (same, no-credentials, error) are silent
+  // other statuses (same, no-credentials, error, local-newer) are silent
 }
 
 function setSyncStatus(msg, type) {
@@ -1360,7 +1380,19 @@ function renderSyncStatus() {
 function scheduleAutoSync() {
   if (!state.syncGistId || !state.syncToken) return;
   clearTimeout(autoSyncTimer);
-  autoSyncTimer = setTimeout(syncToGist, 3000);
+  state.pendingUpload = true;
+  autoSyncTimer = setTimeout(async () => {
+    await syncToGist();
+    state.pendingUpload = false;
+  }, 3000);
+}
+
+// Force any pending upload to complete immediately
+async function flushPendingUpload() {
+  if (!state.pendingUpload) return;
+  clearTimeout(autoSyncTimer);
+  await syncToGist();
+  state.pendingUpload = false;
 }
 
 // ============================================================
