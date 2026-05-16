@@ -941,212 +941,12 @@ input[type="number"]::-webkit-outer-spin-button {
 // ============================================================
 // DATA — FIRERED ELITE TEAM
 // ============================================================
-const ELITE_TEAM_FIRERED = [
-  {
-    id: 'jynx',
-    name: 'Jynx',
-    nature: 'Modest',
-    sprite: '❄️',
-    color: '#E879C9',
-    recommended: { spAtk: 252, speed: 252, hp: 4 },
-    moves: [
-      { name: 'Psychic', source: 'TM29 — Saffron Dojo' },
-      { name: 'Ice Beam', source: 'TM13 — Game Colorner Celadon' },
-      { name: 'Calm Mind', source: 'TM04 — Game Colorner Celadon' },
-      { name: 'Body Slam', source: 'TM08 — Game Colorner Celadon' },
-    ],
-  },
-  {
-    id: 'lapras',
-    name: 'Lapras',
-    nature: 'Modest',
-    sprite: '🌊',
-    color: '#4A90E2',
-    recommended: { hp: 252, spAtk: 252, def: 4 },
-    moves: [
-      { name: 'Surf', source: 'HM03 — Safari Zone Warden' },
-      { name: 'Ice Beam', source: 'TM13 — Icefall Cave / Game Colorner' },
-      { name: 'Thunderbolt', source: 'TM24 — Rocket Hideout Celadon' },
-      { name: 'Body Slam', source: 'TM08 — Game Colorner prize' },
-    ],
-  },
-  {
-    id: 'snorlax',
-    name: 'Snorlax',
-    nature: 'Adamant',
-    sprite: '🗿',
-    color: '#4A5568',
-    recommended: { hp: 252, atk: 252, spDef: 4 },
-    moves: [
-      { name: 'Body Slam', source: 'TM08 — Game Colorner Celadon' },
-      { name: 'Return', source: 'TM27 — Route 12 (amizade alta)' },
-      { name: 'Rest', source: 'TM44 — Safari Zone (+ Chesto Berry)' },
-      { name: 'Shadow Ball', source: 'TM30 — Game Colorner Celadon' },
-    ],
-  },
-  {
-    id: 'rhydon',
-    name: 'Rhydon',
-    nature: 'Adamant',
-    sprite: '🦏',
-    color: '#8B6F47',
-    recommended: { atk: 252, hp: 252, def: 4 },
-    moves: [
-      { name: 'Earthquake', source: 'TM26 — Giovanni at Viridian Gym' },
-      { name: 'Rock Slide', source: 'TM39 — Silph Co. / Rocket Hideout' },
-      { name: 'Brick Break', source: 'TM31 — Celadon Dept. Store' },
-      { name: 'Double-Edge', source: 'Move tutor — Mt. Ember (Sevii)' },
-    ],
-  },
-  {
-    id: 'charizard',
-    name: 'Charizard',
-    nature: 'Mild',
-    sprite: '🔥',
-    color: '#D97706',
-    recommended: { spAtk: 252, atk: 128, speed: 128 },
-    moves: [
-      { name: 'Fire Blast', source: 'TM38 — Pokémon Mansion (Cinnabar)' },
-      { name: 'Brick Break', source: 'TM31 — Celadon Dept. Store' },
-      { name: 'Dragon Claw', source: 'Move tutor — Cape Brink (post-Sevii)' },
-      { name: 'Hidden Power Grass', source: 'TM10 — Route 15 / Meowth Pickup' },
-    ],
-  },
-  {
-    id: 'electric_slot',
-    name: 'Jolteon',
-    nature: 'Timid',
-    sprite: '⚡',
-    color: '#EAB308',
-    recommended: { spAtk: 252, speed: 252, hp: 4 },
-    moves: [
-      { name: 'Thunderbolt', source: 'TM24 — Rocket Hideout Celadon' },
-      { name: 'Bite', source: 'Natural (Eevee learns it early)' },
-      { name: 'Thunder Wave', source: 'Natural level 36' },
-      { name: 'Hidden Power', source: 'TM10 — Route 15 / Meowth Pickup' },
-    ],
-    variants: [
-      {
-        name: 'Jolteon',
-        nature: 'Timid',
-        sprite: '⚡',
-        color: '#EAB308',
-        recommended: { spAtk: 252, speed: 252, hp: 4 },
-        moves: [
-          { name: 'Thunderbolt', source: 'TM24 — Rocket Hideout Celadon' },
-          { name: 'Bite', source: 'Natural (Eevee learns it early)' },
-          { name: 'Thunder Wave', source: 'Natural level 36' },
-          { name: 'Hidden Power', source: 'TM10 — Route 15 / Meowth Pickup' },
-        ],
-        note: 'Pure special sweeper. Speed 130, Sp.Atk 110. Eevee in Celadon Mansion.',
-      },
-      {
-        name: 'Raichu',
-        nature: 'Naughty',
-        sprite: '🐭',
-        color: '#F59E0B',
-        recommended: { speed: 252, atk: 128, spAtk: 128, hp: 4 },
-        moves: [
-          { name: 'Thunderbolt', source: 'TM24 — Rocket Hideout Celadon' },
-          { name: 'Quick Attack', source: 'Natural level 11 (Pikachu)' },
-          { name: 'Thunder Wave', source: 'Natural level 8 (Pikachu)' },
-          { name: 'Brick Break', source: 'TM31 — Celadon Dept. Store' },
-        ],
-        note: 'Mixed attacker. Atk 90 + Sp.Atk 90 leverages physical moves. Needs a Naughty Pikachu.',
-      },
-    ],
-  },
-];
+const ELITE_TEAM_FIRERED = [];
 
 // ============================================================
 // DATA — EMERALD ELITE TEAM
 // ============================================================
-const ELITE_TEAM_EMERALD = [
-  {
-    id: 'em_swampert',
-    name: 'Swampert',
-    nature: 'Adamant',
-    sprite: '🌊',
-    color: '#4A90E2',
-    recommended: { atk: 252, hp: 252, spDef: 4 },
-    moves: [
-      { name: 'Surf', source: 'HM03 — Wallace (after Sootopolis)' },
-      { name: 'Earthquake', source: 'TM26 — Seafloor Cavern' },
-      { name: 'Ice Beam', source: 'TM13 — Abandoned Ship / Game Colorner Mauville' },
-      { name: 'Rock Slide', source: 'TM39 — Fiery Path' },
-    ],
-  },
-  {
-    id: 'em_metagross',
-    name: 'Metagross',
-    nature: 'Adamant',
-    sprite: '🪨',
-    color: '#7C3AED',
-    recommended: { atk: 252, hp: 252, def: 4 },
-    moves: [
-      { name: 'Meteor Mash', source: 'Natural level 45' },
-      { name: 'Earthquake', source: 'TM26 — Seafloor Cavern' },
-      { name: 'Psychic', source: 'TM29 — Victory Road' },
-      { name: 'Shadow Ball', source: 'TM30 — Mt. Pyre (physical in Gen 3!)' },
-    ],
-  },
-  {
-    id: 'em_manectric',
-    name: 'Manectric',
-    nature: 'Timid',
-    sprite: '⚡',
-    color: '#EAB308',
-    recommended: { spAtk: 252, speed: 252, hp: 4 },
-    moves: [
-      { name: 'Thunderbolt', source: 'TM24 — Wattson (Mauville Gym)' },
-      { name: 'Crunch', source: 'Natural level 47 (special in Gen 3!)' },
-      { name: 'Thunder Wave', source: 'Natural level 13' },
-      { name: 'Hidden Power', source: 'TM10 — Fortree (Grass/Ice ideal)' },
-    ],
-  },
-  {
-    id: 'em_flygon',
-    name: 'Flygon',
-    nature: 'Adamant',
-    sprite: '🐲',
-    color: '#84CC16',
-    recommended: { atk: 252, speed: 252, hp: 4 },
-    moves: [
-      { name: 'Earthquake', source: 'TM26 — Seafloor Cavern' },
-      { name: 'Dragon Claw', source: 'TM02 — Meteor Falls' },
-      { name: 'Rock Slide', source: 'TM39 — Fiery Path' },
-      { name: 'Aerial Ace', source: 'TM40 — Fortree' },
-    ],
-  },
-  {
-    id: 'em_walrein',
-    name: 'Walrein',
-    nature: 'Modest',
-    sprite: '❄️',
-    color: '#06B6D4',
-    recommended: { spAtk: 252, hp: 252, spDef: 4 },
-    moves: [
-      { name: 'Ice Beam', source: 'TM13 — Abandoned Ship / Game Colorner' },
-      { name: 'Surf', source: 'HM03 — Wallace' },
-      { name: 'Toxic', source: 'TM06 — Fiery Path' },
-      { name: 'Sheer Cold', source: 'Natural level 56 (OHKO)' },
-    ],
-  },
-  {
-    id: 'em_hariyama',
-    name: 'Hariyama',
-    nature: 'Adamant',
-    sprite: '🥋',
-    color: '#F97316',
-    recommended: { atk: 252, hp: 252, spDef: 4 },
-    moves: [
-      { name: 'Cross Chop', source: 'Natural Makuhita level 25' },
-      { name: 'Brick Break', source: 'TM31 — Sootopolis Mart' },
-      { name: 'Rock Tomb', source: 'TM39 — Fiery Path' },
-      { name: 'Knock Off', source: 'Natural Makuhita level 22' },
-    ],
-  },
-];
+const ELITE_TEAM_EMERALD = [];
 
 // Map of game id → elite team
 const GAMES = {
@@ -1363,9 +1163,10 @@ function initEVs() {
       init[p.id] = gd.evs[p.id] || emptyEVs();
     });
     gd.evs = init;
-    if (!gd.selected) {
-      const visible = team.filter((p) => !gd.hiddenElite[p.id]);
-      gd.selected = (visible[0] || team[0])?.id || null;
+    // Pick a sensible default 'selected' pokémon: first visible elite, else first custom, else null
+    if (!gd.selected || (!team.find(p => p.id === gd.selected) && !gd.customPokemon.find(p => p.id === gd.selected))) {
+      const visibleElite = team.filter((p) => !gd.hiddenElite[p.id]);
+      gd.selected = (visibleElite[0] || team[0] || gd.customPokemon[0])?.id || null;
     }
   }
 }
@@ -1880,6 +1681,29 @@ function resetTargetsToDefault(pokemonId) {
 // ============================================================
 // EXPORT / IMPORT
 // ============================================================
+
+function clearAllData() {
+  if (!confirm('⚠ This will permanently delete ALL your data: Pokémon, EVs, history, and sync credentials. Continue?')) return;
+  if (!confirm('Are you absolutely sure? This cannot be undone (unless you have an exported JSON backup).')) return;
+  // Reset all per-game data
+  for (const gameId of Object.keys(GAMES)) {
+    state.gameData[gameId] = { evs: {}, customPokemon: [], activeVariants: {}, hiddenElite: {}, customTargets: {}, selected: null };
+  }
+  state.history = [];
+  state.syncGistId = '';
+  state.syncToken = '';
+  state.lastLocalModified = 0;
+  state.lastPulledGistTimestamp = 0;
+  state.editingTargets = null;
+  state.showAddModal = false;
+  state.showHistoryModal = false;
+  state.showSyncModal = false;
+  state.showGameSwitcher = false;
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  showSaveStatus('All data cleared ✓', 2500);
+  render();
+}
+
 function exportJSON() {
   const data = {
     version: 2,
@@ -1942,7 +1766,7 @@ function importJSON() {
 function render() {
   const allPokemon = getAllPokemon();
   const selectedPokemon = allPokemon.find((p) => p.id === state.selected) || allPokemon[0];
-  const selectedEVs = state.evs[selectedPokemon.id] || emptyEVs();
+  const selectedEVs = selectedPokemon ? (state.evs[selectedPokemon.id] || emptyEVs()) : emptyEVs();
   const totalEVs = Object.values(selectedEVs).reduce((a, b) => a + b, 0);
   const remaining = MAX_TOTAL - totalEVs;
 
@@ -2006,6 +1830,7 @@ function renderHeader() {
           <button class="btn btn-amber" data-action="undo" ${state.history.length === 0 ? 'disabled' : ''}>
             <span>↺</span><span>Undo</span>
           </button>
+          <button class="btn btn-red" data-action="clear-all" title="Delete all data">⌫ Clear All</button>
           <button class="btn btn-indigo" data-action="history">
             <span>📜</span><span>History${state.history.length > 0 ? ` (${state.history.length})` : ''}</span>
           </button>
@@ -2090,7 +1915,7 @@ function renderCustomGrid() {
   return `
     <div style="margin-bottom:20px">
       <div class="section-label" style="color:rgba(216, 180, 254, 0.8)">
-        <span>✦ Extra Pokémon${state.customPokemon.length > 0 ? ` (${state.customPokemon.length})` : ''}</span>
+        <span>★ Your Team${state.customPokemon.length > 0 ? ` (${state.customPokemon.length})` : ''}</span>
         <button class="btn btn-purple" data-action="add">+ Add</button>
       </div>
       ${state.customPokemon.length === 0
@@ -2471,6 +2296,7 @@ function attachListeners() {
     if (action === 'switch-game') { switchGame(t.dataset.game); return; }
     if (action === 'undo') { undoLastAction(); return; }
     if (action === 'history') { state.showHistoryModal = true; render(); return; }
+    if (action === 'clear-all') { clearAllData(); return; }
     if (action === 'add') { openAddModal(); return; }
     if (action === 'reset') { resetPokemon(state.selected); return; }
     if (action === 'apply-recommended') { applyRecommended(state.selected); return; }
